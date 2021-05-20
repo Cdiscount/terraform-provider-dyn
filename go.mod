@@ -1,6 +1,12 @@
 module github.com/terraform-providers/terraform-provider-dyn
 
+go 1.15
+
 require (
-	github.com/hashicorp/terraform v0.12.4
+	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
+	github.com/hashicorp/terraform-plugin-sdk/v2 v2.4.3
 	github.com/nesv/go-dynect v0.5.3
+	google.golang.org/appengine v1.6.6 // indirect
+	google.golang.org/grpc v1.38.0 // indirect
+	google.golang.org/protobuf v1.26.0 // indirect
 )
