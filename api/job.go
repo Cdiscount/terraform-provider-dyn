@@ -1,4 +1,4 @@
-package dynect
+package api
 
 type JobData struct {
 	Status   string         `json:"status"`

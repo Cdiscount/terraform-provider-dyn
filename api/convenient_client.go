@@ -1,4 +1,4 @@
-package dynect
+package api
 
 import (
 	"fmt"

@@ -166,9 +166,6 @@ github.com/mitchellh/go-wordwrap
 github.com/mitchellh/mapstructure
 # github.com/mitchellh/reflectwalk v1.0.1
 github.com/mitchellh/reflectwalk
-# github.com/nesv/go-dynect v0.5.3
-## explicit
-github.com/nesv/go-dynect/dynect
 # github.com/oklog/run v1.0.0
 github.com/oklog/run
 # github.com/ulikunitz/xz v0.5.8

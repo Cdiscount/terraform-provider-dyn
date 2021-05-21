@@ -8,11 +8,11 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
-	"github.com/nesv/go-dynect/dynect"
+	"gitlab.cshield.io/cshield.tech/infra/terraform-provider-dyn/api"
 )
 
 func TestAccDynRecord_Basic(t *testing.T) {
-	var record dynect.Record
+	var record api.Record
 	zone := os.Getenv("DYN_ZONE")
 
 	resource.Test(t, resource.TestCase{
@@ -38,7 +38,7 @@ func TestAccDynRecord_Basic(t *testing.T) {
 }
 
 func TestAccDynRecord_noTTL(t *testing.T) {
-	var record dynect.Record
+	var record api.Record
 	zone := os.Getenv("DYN_ZONE")
 	integerRe := regexp.MustCompile("^[0-9]+$")
 
@@ -63,7 +63,7 @@ func TestAccDynRecord_noTTL(t *testing.T) {
 }
 
 func TestAccDynRecord_Updated(t *testing.T) {
-	var record dynect.Record
+	var record api.Record
 	zone := os.Getenv("DYN_ZONE")
 
 	resource.Test(t, resource.TestCase{
@@ -102,7 +102,7 @@ func TestAccDynRecord_Updated(t *testing.T) {
 }
 
 func TestAccDynRecord_Multiple(t *testing.T) {
-	var record dynect.Record
+	var record api.Record
 	zone := os.Getenv("DYN_ZONE")
 
 	resource.Test(t, resource.TestCase{
@@ -140,7 +140,7 @@ func TestAccDynRecord_Multiple(t *testing.T) {
 }
 
 func TestAccDynRecord_CNAME_trailingDot(t *testing.T) {
-	var record dynect.Record
+	var record api.Record
 	zone := os.Getenv("DYN_ZONE")
 
 	resource.Test(t, resource.TestCase{
@@ -164,7 +164,7 @@ func TestAccDynRecord_CNAME_trailingDot(t *testing.T) {
 }
 
 func TestAccDynRecord_CNAME_topLevelDomain(t *testing.T) {
-	var record dynect.Record
+	var record api.Record
 	zone := os.Getenv("DYN_ZONE")
 
 	resource.Test(t, resource.TestCase{
@@ -188,7 +188,7 @@ func TestAccDynRecord_CNAME_topLevelDomain(t *testing.T) {
 }
 
 func TestAccDynRecord_NS_record(t *testing.T) {
-	var record dynect.Record
+	var record api.Record
 	zone := os.Getenv("DYN_ZONE")
 
 	resource.Test(t, resource.TestCase{
@@ -212,7 +212,7 @@ func TestAccDynRecord_NS_record(t *testing.T) {
 }
 
 func TestAccDynRecord_MX_record(t *testing.T) {
-	var record dynect.Record
+	var record api.Record
 	zone := os.Getenv("DYN_ZONE")
 
 	resource.Test(t, resource.TestCase{
@@ -236,14 +236,14 @@ func TestAccDynRecord_MX_record(t *testing.T) {
 }
 
 func testAccCheckDynRecordDestroy(s *terraform.State) error {
-	client := testAccProvider.Meta().(*dynect.ConvenientClient)
+	client := testAccProvider.Meta().(*api.ConvenientClient)
 
 	for _, rs := range s.RootModule().Resources {
 		if rs.Type != "dyn_record" {
 			continue
 		}
 
-		foundRecord := &dynect.Record{
+		foundRecord := &api.Record{
 			Zone: rs.Primary.Attributes["zone"],
 			ID:   rs.Primary.ID,
 			FQDN: rs.Primary.Attributes["fqdn"],
@@ -260,7 +260,7 @@ func testAccCheckDynRecordDestroy(s *terraform.State) error {
 	return nil
 }
 
-func testAccCheckDynRecordAttributes(record *dynect.Record) resource.TestCheckFunc {
+func testAccCheckDynRecordAttributes(record *api.Record) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 
 		if record.Value != "192.168.0.10" {
@@ -271,7 +271,7 @@ func testAccCheckDynRecordAttributes(record *dynect.Record) resource.TestCheckFu
 	}
 }
 
-func testAccCheckDynRecordAttributesUpdated(record *dynect.Record) resource.TestCheckFunc {
+func testAccCheckDynRecordAttributesUpdated(record *api.Record) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 
 		if record.Value != "192.168.0.11" {
@@ -282,7 +282,7 @@ func testAccCheckDynRecordAttributesUpdated(record *dynect.Record) resource.Test
 	}
 }
 
-func testAccCheckDynRecordExists(n string, record *dynect.Record) resource.TestCheckFunc {
+func testAccCheckDynRecordExists(n string, record *api.Record) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 		rs, ok := s.RootModule().Resources[n]
 
@@ -294,9 +294,9 @@ func testAccCheckDynRecordExists(n string, record *dynect.Record) resource.TestC
 			return fmt.Errorf("No Record ID is set")
 		}
 
-		client := testAccProvider.Meta().(*dynect.ConvenientClient)
+		client := testAccProvider.Meta().(*api.ConvenientClient)
 
-		foundRecord := &dynect.Record{
+		foundRecord := &api.Record{
 			Zone: rs.Primary.Attributes["zone"],
 			ID:   rs.Primary.ID,
 			FQDN: rs.Primary.Attributes["fqdn"],

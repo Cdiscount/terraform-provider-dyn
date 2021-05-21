@@ -1,4 +1,4 @@
-package dynect
+package api
 
 // Type AllRecordsResponse is a struct for holding a list of all URIs returned
 // from an HTTP GET call to either https://api.dynect.net/REST/AllRecord/<zone>
