@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/plugin"
-	"github.com/terraform-providers/terraform-provider-dyn/dyn"
+	"gitlab.cshield.io/cshield.tech/infra/terraform-provider-dyn/dyn"
 )
 
 func main() {

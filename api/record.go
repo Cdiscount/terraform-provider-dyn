@@ -1,4 +1,4 @@
-package dynect
+package api
 
 // Record simple struct to hold record details
 type Record struct {

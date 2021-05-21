@@ -1,4 +1,4 @@
-package dynect
+package api
 
 // ZonesResponse is used for holding the data returned by a call to
 // "https://api.dynect.net/REST/Zone/".

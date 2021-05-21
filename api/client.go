@@ -1,4 +1,4 @@
-package dynect
+package api
 
 import (
 	"bytes"
@@ -180,7 +180,7 @@ func (c *Client) Do(method, endpoint string, requestData, responseData interface
 			return fmt.Errorf("Could not read response body")
 		}
 		if err := json.Unmarshal(text, &responseData); err != nil {
-			return fmt.Errorf("Error unmarshalling response:", err)
+			return fmt.Errorf("Error unmarshalling response: %s", err)
 		}
 
 		return nil
@@ -228,10 +228,10 @@ func (c *Client) Do(method, endpoint string, requestData, responseData interface
 				text, err := ioutil.ReadAll(resp.Body)
 				//log.Println(string(text))
 				if err != nil {
-					return fmt.Errorf("Could not read response body:", err)
+					return fmt.Errorf("Could not read response body: %s", err)
 				}
 				if err := json.Unmarshal(text, &jobData); err != nil {
-					return fmt.Errorf("failed to decode job response body:", err)
+					return fmt.Errorf("failed to decode job response body: %s", err)
 				}
 
 				// Check to see the status of the job.
@@ -249,7 +249,7 @@ func (c *Client) Do(method, endpoint string, requestData, responseData interface
 					continue
 				case "success":
 					if err := json.Unmarshal(text, &responseData); err != nil {
-						return fmt.Errorf("failed to decode response body:", err)
+						return fmt.Errorf("failed to decode response body: %s", err)
 					}
 					return nil
 				case "failure":

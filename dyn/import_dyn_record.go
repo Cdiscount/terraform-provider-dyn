@@ -5,13 +5,14 @@ import (
 	"strings"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"github.com/nesv/go-dynect/dynect"
+
+	"gitlab.cshield.io/cshield.tech/infra/terraform-provider-dyn/api"
 )
 
 func resourceDynRecordImportState(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	results := make([]*schema.ResourceData, 1, 1)
 
-	client := meta.(*dynect.ConvenientClient)
+	client := meta.(*api.ConvenientClient)
 
 	values := strings.Split(d.Id(), "/")
 
@@ -30,7 +31,7 @@ func resourceDynRecordImportState(d *schema.ResourceData, meta interface{}) ([]*
 		recordID = ""
 	}
 
-	record := &dynect.Record{
+	record := &api.Record{
 		ID:    recordID,
 		Name:  "",
 		Zone:  recordZone,

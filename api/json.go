@@ -1,4 +1,4 @@
-package dynect
+package api
 
 /*
 This struct represents the request body that would be sent to the DynECT API

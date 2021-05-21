@@ -7,7 +7,7 @@ import (
 	"sync"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"github.com/nesv/go-dynect/dynect"
+	"gitlab.cshield.io/cshield.tech/infra/terraform-provider-dyn/api"
 )
 
 var mutex = &sync.Mutex{}
@@ -86,9 +86,9 @@ func resourceDynRecord() *schema.Resource {
 func resourceDynRecordCreate(d *schema.ResourceData, meta interface{}) error {
 	mutex.Lock()
 
-	client := meta.(*dynect.ConvenientClient)
+	client := meta.(*api.ConvenientClient)
 
-	record := &dynect.Record{
+	record := &api.Record{
 		Name:  d.Get("name").(string),
 		Zone:  d.Get("zone").(string),
 		Type:  d.Get("type").(string),
@@ -127,9 +127,9 @@ func resourceDynRecordRead(d *schema.ResourceData, meta interface{}) error {
 	mutex.Lock()
 	defer mutex.Unlock()
 
-	client := meta.(*dynect.ConvenientClient)
+	client := meta.(*api.ConvenientClient)
 
-	record := &dynect.Record{
+	record := &api.Record{
 		ID:   d.Id(),
 		Name: d.Get("name").(string),
 		Zone: d.Get("zone").(string),
@@ -156,9 +156,9 @@ func resourceDynRecordRead(d *schema.ResourceData, meta interface{}) error {
 func resourceDynRecordUpdate(d *schema.ResourceData, meta interface{}) error {
 	mutex.Lock()
 
-	client := meta.(*dynect.ConvenientClient)
+	client := meta.(*api.ConvenientClient)
 
-	record := &dynect.Record{
+	record := &api.Record{
 		ID:    d.Id(),
 		Name:  d.Get("name").(string),
 		Zone:  d.Get("zone").(string),
@@ -198,9 +198,9 @@ func resourceDynRecordDelete(d *schema.ResourceData, meta interface{}) error {
 	mutex.Lock()
 	defer mutex.Unlock()
 
-	client := meta.(*dynect.ConvenientClient)
+	client := meta.(*api.ConvenientClient)
 
-	record := &dynect.Record{
+	record := &api.Record{
 		ID:   d.Id(),
 		Name: d.Get("name").(string),
 		Zone: d.Get("zone").(string),

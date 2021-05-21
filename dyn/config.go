@@ -5,7 +5,7 @@ import (
 	"log"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/logging"
-	"github.com/nesv/go-dynect/dynect"
+	"gitlab.cshield.io/cshield.tech/infra/terraform-provider-dyn/api"
 )
 
 type Config struct {
@@ -15,8 +15,8 @@ type Config struct {
 }
 
 // Client() returns a new client for accessing dyn.
-func (c *Config) Client() (*dynect.ConvenientClient, error) {
-	client := dynect.NewConvenientClient(c.CustomerName)
+func (c *Config) Client() (*api.ConvenientClient, error) {
+	client := api.NewConvenientClient(c.CustomerName)
 	if logging.IsDebugOrHigher() {
 		client.Verbose(true)
 	}
