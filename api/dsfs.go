@@ -27,6 +27,11 @@ type DSFService struct {
 	Rulesets      []DSFRuleset `json:"rulesets"`
 }
 
+type DSFServiceRequest struct {
+	Label string `json:"label"`
+	TTL   string `json:"ttl"`
+}
+
 type DSFRuleset struct {
 	ID            string            `json:"dsf_ruleset_id`
 	Label         string            `json:"label"`
