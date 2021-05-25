@@ -28,6 +28,7 @@ type DSFService struct {
 }
 
 type DSFServiceRequest struct {
+	CreateOrUpdateBlock
 	Label string `json:"label"`
 	TTL   string `json:"ttl"`
 }

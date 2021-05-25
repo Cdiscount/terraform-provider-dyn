@@ -30,10 +30,13 @@ func resourceDynTrafficDirector() *schema.Resource {
 
 func resourceDynTrafficDirectorCreate(d *schema.ResourceData, meta interface{}) error {
 	request := &api.DSFServiceRequest{
+		CreateOrUpdateBlock: api.CreateOrUpdateBlock{
+			Publish: true,
+		},
 		Label: d.Get("label").(string),
 		TTL:   d.Get("ttl").(string),
 	}
-	response := &api.DSFService{}
+	response := &api.DSFResponse{}
 	client := meta.(*api.ConvenientClient)
 
 	err := client.Do("POST", "DSF", request, response)
@@ -41,7 +44,8 @@ func resourceDynTrafficDirectorCreate(d *schema.ResourceData, meta interface{}) 
 		return err
 	}
 
-	load_dsf_service(d, response)
+	d.SetId(response.Data.ID)
+	load_dsf_service(d, &response.Data)
 
 	return nil
 }
@@ -49,7 +53,7 @@ func resourceDynTrafficDirectorCreate(d *schema.ResourceData, meta interface{}) 
 func resourceDynTrafficDirectorRead(d *schema.ResourceData, meta interface{}) error {
 	id := d.Id()
 	client := meta.(*api.ConvenientClient)
-	response := &api.DSFService{}
+	response := &api.DSFResponse{}
 
 	url := fmt.Sprintf("DSF/%s", id)
 	err := client.Do("GET", url, nil, response)
@@ -57,7 +61,7 @@ func resourceDynTrafficDirectorRead(d *schema.ResourceData, meta interface{}) er
 		return err
 	}
 
-	load_dsf_service(d, response)
+	load_dsf_service(d, &response.Data)
 
 	return nil
 }
@@ -66,10 +70,13 @@ func resourceDynTrafficDirectorUpdate(d *schema.ResourceData, meta interface{}) 
 	id := d.Id()
 	client := meta.(*api.ConvenientClient)
 	request := &api.DSFServiceRequest{
+		CreateOrUpdateBlock: api.CreateOrUpdateBlock{
+			Publish: true,
+		},
 		Label: d.Get("label").(string),
 		TTL:   d.Get("ttl").(string),
 	}
-	response := &api.DSFService{}
+	response := &api.DSFResponse{}
 
 	url := fmt.Sprintf("DSF/%s", id)
 	err := client.Do("PUT", url, request, response)
@@ -77,7 +84,7 @@ func resourceDynTrafficDirectorUpdate(d *schema.ResourceData, meta interface{}) 
 		return err
 	}
 
-	load_dsf_service(d, response)
+	load_dsf_service(d, &response.Data)
 
 	return nil
 }
@@ -96,7 +103,6 @@ func resourceDynTrafficDirectorDelete(d *schema.ResourceData, meta interface{}) 
 }
 
 func load_dsf_service(d *schema.ResourceData, response *api.DSFService) {
-	d.SetId(response.ID)
 	d.Set("label", response.Label)
 	d.Set("ttl", response.TTL)
 }
