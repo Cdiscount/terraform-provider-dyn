@@ -139,3 +139,12 @@ type Notifier struct {
 	Recipients string `json:"recipients"`
 	Active     string `json:"active"`
 }
+
+type DSFRsfcRequest struct {
+	CreateOrUpdateBlock
+	Label string `json:"label"`
+}
+type DSFRsfcResponse struct {
+	ResponseBlock
+	Data DSFRecordSetChain `json:"data"`
+}

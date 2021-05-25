@@ -35,6 +35,7 @@ func Provider() *schema.Provider {
 			"dyn_traffic_director":  resourceDynTrafficDirector(),
 			"dyn_dsf_ruleset":       resourceDynDSFRuleset(),
 			"dyn_dsf_response_pool": resourceDynDSFResponsePool(),
+			"dyn_dsf_rsfc":          resourceDynDSFRsfc(),
 		},
 
 		ConfigureFunc: providerConfigure,
