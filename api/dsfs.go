@@ -104,6 +104,7 @@ type DSFRecordSet struct {
 	ServeCount    string      `json:"serve_count"`
 	Automation    string      `json:"automation"`
 	PendingChange string      `json:"pending_change"`
+	RDataClass    string      `json:"rdata_class"`
 }
 
 type DSFRecord struct {
@@ -147,4 +148,23 @@ type DSFRsfcRequest struct {
 type DSFRsfcResponse struct {
 	ResponseBlock
 	Data DSFRecordSetChain `json:"data"`
+}
+type DSFRecordSetRequest struct {
+	CreateOrUpdateBlock
+	Label          string `json:"label"`
+	RDataClass     string `json:"rdata_class"`
+	TTL            string `json:"ttl,omitempty"`
+	Automation     string `json:"automation,omitempty"`
+	ServeCount     string `json:"serve_count,omitempty"`
+	FailCount      string `json:"fail_count,omitempty"`
+	TroubleCount   string `json:"trouble_count,omitempty"`
+	Eligible       string `json:"eligible,omitempty"`
+	MonitorID      string `json:"dsf_monitor_id,omitempty"`
+	DSFRsfc        string `json:"dsf_record_set_failover_chain_id"`
+	ResponsePoolId string `json:"dsf_response_pool_id"`
+}
+
+type DSFRecordSetResponse struct {
+	ResponseBlock
+	Data DSFRecordSet `json:"data"`
 }
