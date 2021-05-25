@@ -33,8 +33,13 @@ type DSFServiceRequest struct {
 	TTL   string `json:"ttl"`
 }
 
+type DSFRulesetRequest struct {
+	CreateOrUpdateBlock
+	Label        string `json:"label"`
+	CriteriaType string `json:"criteria_type"`
+}
 type DSFRuleset struct {
-	ID            string            `json:"dsf_ruleset_id`
+	ID            string            `json:"dsf_ruleset_id"`
 	Label         string            `json:"label"`
 	CriteriaType  string            `json:"criteria_type"`
 	Criteria      interface{}       `json:"criteria"`
@@ -42,6 +47,10 @@ type DSFRuleset struct {
 	Eligible      string            `json:"eligible"`
 	PendingChange string            `json:"pending_change"`
 	ResponsePools []DSFResponsePool `json:"response_pools"`
+}
+type DSFRulesetResponse struct {
+	ResponseBlock
+	Data DSFRuleset `json:"data"`
 }
 
 type DSFResponsePool struct {

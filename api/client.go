@@ -176,6 +176,7 @@ func (c *Client) Do(method, endpoint string, requestData, responseData interface
 
 		//dec := json.NewDecoder(resp.Body)
 		text, err := ioutil.ReadAll(resp.Body)
+		log.Printf("[DEBUG] API Response: %s", text)
 		if err != nil {
 			return fmt.Errorf("Could not read response body")
 		}
