@@ -31,9 +31,10 @@ func Provider() *schema.Provider {
 		},
 
 		ResourcesMap: map[string]*schema.Resource{
-			"dyn_record":           resourceDynRecord(),
-			"dyn_traffic_director": resourceDynTrafficDirector(),
-			"dyn_dsf_ruleset":      resourceDynDSFRuleset(),
+			"dyn_record":            resourceDynRecord(),
+			"dyn_traffic_director":  resourceDynTrafficDirector(),
+			"dyn_dsf_ruleset":       resourceDynDSFRuleset(),
+			"dyn_dsf_response_pool": resourceDynDSFResponsePool(),
 		},
 
 		ConfigureFunc: providerConfigure,

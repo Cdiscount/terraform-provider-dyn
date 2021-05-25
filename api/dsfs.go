@@ -53,6 +53,15 @@ type DSFRulesetResponse struct {
 	Data DSFRuleset `json:"data"`
 }
 
+type DSFResponsePoolResponse struct {
+	ResponseBlock
+	Data DSFResponsePool `json:"data"`
+}
+type DSFResponsePoolRequest struct {
+	CreateOrUpdateBlock
+	Label      string `json:"label"`
+	Automation string `json:"automation",omit_empty`
+}
 type DSFResponsePool struct {
 	ID            string              `json:"dsf_response_pool_id"`
 	Label         string              `json:"label"`

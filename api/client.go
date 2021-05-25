@@ -132,6 +132,7 @@ func (c *Client) Do(method, endpoint string, requestData, responseData interface
 	var js []byte
 	if requestData != nil {
 		js, err = json.Marshal(requestData)
+		log.Printf("[DEBUG] API Request: %s", js)
 	} else {
 		js = []byte("")
 	}
