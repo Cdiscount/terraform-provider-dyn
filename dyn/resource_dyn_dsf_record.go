@@ -41,19 +41,6 @@ func resourceDynDsfRecord() *schema.Resource {
 				Type:     schema.TypeString,
 				Optional: true,
 			},
-			"rdata": {
-				Type:     schema.TypeList,
-				Required: true,
-				MaxItems: 1,
-				Elem: &schema.Resource{
-					Schema: map[string]*schema.Schema{
-						"a_rdata": {
-							Type:     schema.TypeString,
-							Optional: true,
-						},
-					},
-				},
-			},
 		},
 	}
 }
@@ -67,7 +54,6 @@ func resourceDynDsfRecordCreate(d *schema.ResourceData, meta interface{}) error 
 		Weight:     d.Get("weight").(string),
 		Automation: d.Get("automation").(string),
 		MasterLine: d.Get("master_line").(string),
-		// Rdata:      d.Get("rdata").(string),
 	}
 
 	traffic_director_id := d.Get("traffic_director_id").(string)
@@ -115,7 +101,6 @@ func resourceDynDsfRecordUpdate(d *schema.ResourceData, meta interface{}) error 
 		Weight:     d.Get("weight").(string),
 		Automation: d.Get("automation").(string),
 		MasterLine: d.Get("master_line").(string),
-		// Rdata:      d.Get("rdata").(string),
 	}
 	response := &api.DSFRecordResponse{}
 
@@ -150,5 +135,5 @@ func load_dsf_record(d *schema.ResourceData, response *api.DSFRecord) {
 	d.Set("label", response.Label)
 	d.Set("weight", response.Weight)
 	d.Set("automation", response.Automation)
-	//d.Set("rdata", response.Rdata)
+	d.Set("master_line", response.MasterLine)
 }
