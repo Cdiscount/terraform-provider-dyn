@@ -23,6 +23,13 @@ func resourceDynDSFRuleset() *schema.Resource {
 				Type:     schema.TypeString,
 				Required: true,
 			},
+			"response_pool_ids": {
+				Type:     schema.TypeList,
+				Optional: true,
+				Elem: &schema.Schema{
+					Type: schema.TypeString,
+				},
+			},
 		},
 	}
 }
@@ -34,6 +41,7 @@ func resourceDynDSFRulesetCreate(d *schema.ResourceData, meta interface{}) error
 		},
 		Label:        d.Get("label").(string),
 		CriteriaType: "always",
+		ResponsePool: computRuleSetResponsePool(d),
 	}
 	traffic_director_id := d.Get("traffic_director_id").(string)
 	response := &api.DSFRulesetResponse{}
@@ -49,6 +57,18 @@ func resourceDynDSFRulesetCreate(d *schema.ResourceData, meta interface{}) error
 	load_dsf_ruleset(d, &response.Data)
 
 	return nil
+}
+
+func computRuleSetResponsePool(d *schema.ResourceData) *[]api.DSFResponsePoolRef {
+	ids := d.Get("response_pool_ids").([]interface{})
+
+	pool := make([]api.DSFResponsePoolRef, len(ids))
+	for i, id := range ids {
+		pool[i] = api.DSFResponsePoolRef{
+			ID: id.(string),
+		}
+	}
+	return &pool
 }
 
 func resourceDynDSFRulesetRead(d *schema.ResourceData, meta interface{}) error {
@@ -78,6 +98,7 @@ func resourceDynDSFRulesetUpdate(d *schema.ResourceData, meta interface{}) error
 		},
 		Label:        d.Get("label").(string),
 		CriteriaType: "always",
+		ResponsePool: computRuleSetResponsePool(d),
 	}
 	response := &api.DSFRulesetResponse{}
 
