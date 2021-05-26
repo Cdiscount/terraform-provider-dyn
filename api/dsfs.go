@@ -133,6 +133,16 @@ type DSFRecord struct {
 	Publish         string `json:"publish",omit_empty`
 }
 
+type DSFNodeRequest struct {
+	CreateOrUpdateBlock
+	Node []DSFNode `json:"nodes"`
+}
+
+type DSFNodeResponse struct {
+	ResponseBlock
+	Data []DSFNode `json:"data"`
+}
+
 type DSFNode struct {
 	Zone string `json:"zone"`
 	FQDN string `json:"fqdn"`
