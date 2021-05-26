@@ -37,6 +37,7 @@ func Provider() *schema.Provider {
 			"dyn_dsf_response_pool": resourceDynDSFResponsePool(),
 			"dyn_dsf_rsfc":          resourceDynDSFRsfc(),
 			"dyn_dsf_record_set":    resourceDynDSFRecordSet(),
+			"dyn_dsf_record":        resourceDynDsfRecord(),
 		},
 
 		ConfigureFunc: providerConfigure,

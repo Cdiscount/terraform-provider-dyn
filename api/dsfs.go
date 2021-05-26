@@ -172,3 +172,22 @@ type DSFRecordSetResponse struct {
 	ResponseBlock
 	Data DSFRecordSet `json:"data"`
 }
+
+type DSFRecordRequest struct {
+	CreateOrUpdateBlock
+	Label      string   `json:"label"`
+	Weight     string   `json:"weight,omitempty"`
+	Automation string   `json:"automation,omitempty"`
+	MasterLine string   `json:"master_line,omitempty"`
+	Rdata      DSFRData `json:"rdata"`
+}
+type DSFRData struct {
+	ARData *DSFARData `json:"a_rdata,omitempty"`
+}
+type DSFARData struct {
+	Address string `json:"address,omitempty"`
+}
+type DSFRecordResponse struct {
+	ResponseBlock
+	Data DSFRecord `json:"data"`
+}
