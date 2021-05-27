@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -48,6 +49,7 @@ type Client struct {
 	CustomerName string
 	transport    *http.Transport
 	verbose      bool
+	mutex        *sync.Mutex
 }
 
 // Creates a new Httpclient.
@@ -55,6 +57,7 @@ func NewClient(customerName string) *Client {
 	return &Client{
 		CustomerName: customerName,
 		transport:    &http.Transport{Proxy: http.ProxyFromEnvironment},
+		mutex:        &sync.Mutex{},
 	}
 }
 
@@ -108,6 +111,9 @@ func (c *Client) newRequest(method, urlStr string, data []byte) (*http.Request, 
 	} else {
 		r, err = http.NewRequest(method, urlStr, nil)
 	}
+	if err != nil {
+		return r, err
+	}
 
 	r.Header.Set("Auth-Token", c.Token)
 	r.Header.Set("Content-Type", "application/json")
@@ -116,6 +122,8 @@ func (c *Client) newRequest(method, urlStr string, data []byte) (*http.Request, 
 }
 
 func (c *Client) Do(method, endpoint string, requestData, responseData interface{}) error {
+	c.mutex.Lock()
+	defer c.mutex.Unlock()
 	// Throw an error if the user tries to make a request if the client is
 	// logged out/unauthenticated, but make an exemption for when the
 	// caller is trying to log in.
