@@ -126,10 +126,11 @@ func resourceDynDsfRecordUpdate(d *schema.ResourceData, meta interface{}) error 
 }
 
 func resourceDynDsfRecordDelete(d *schema.ResourceData, meta interface{}) error {
+	traffic_director_id := d.Get("traffic_director_id").(string)
 	id := d.Id()
 	client := meta.(*api.ConvenientClient)
 
-	url := fmt.Sprintf("DSFRecord/%s", id)
+	url := fmt.Sprintf("DSFRecord/%s/%s", traffic_director_id, id)
 	err := client.Do("DELETE", url, nil, nil)
 	if err != nil {
 		return err
