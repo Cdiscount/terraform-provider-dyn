@@ -49,7 +49,7 @@ type Client struct {
 	CustomerName string
 	transport    *http.Transport
 	verbose      bool
-	mutex        *sync.Mutex
+	mutex        sync.Mutex
 }
 
 // Creates a new Httpclient.
@@ -57,7 +57,7 @@ func NewClient(customerName string) *Client {
 	return &Client{
 		CustomerName: customerName,
 		transport:    &http.Transport{Proxy: http.ProxyFromEnvironment},
-		mutex:        &sync.Mutex{},
+		mutex:        sync.Mutex{},
 	}
 }
 
