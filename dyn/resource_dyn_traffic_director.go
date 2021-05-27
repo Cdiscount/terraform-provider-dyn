@@ -46,7 +46,7 @@ func resourceDynTrafficDirector() *schema.Resource {
 
 func resourceDynTrafficDirectorCreate(d *schema.ResourceData, meta interface{}) error {
 	request := &api.DSFServiceRequest{
-		CreateOrUpdateBlock: api.CreateOrUpdateBlock{
+		PublishBlock: api.PublishBlock{
 			Publish: true,
 		},
 		Label: d.Get("label").(string),
@@ -87,7 +87,7 @@ func resourceDynTrafficDirectorUpdate(d *schema.ResourceData, meta interface{}) 
 	if d.HasChanges("label", "ttl") {
 		id := d.Id()
 		request := &api.DSFServiceRequest{
-			CreateOrUpdateBlock: api.CreateOrUpdateBlock{
+			PublishBlock: api.PublishBlock{
 				Publish: true,
 			},
 			Label: d.Get("label").(string),
@@ -130,7 +130,7 @@ func updateDsfNodes(d *schema.ResourceData, client *api.ConvenientClient) error 
 		}
 	}
 	request := &api.DSFNodeRequest{
-		CreateOrUpdateBlock: api.CreateOrUpdateBlock{
+		PublishBlock: api.PublishBlock{
 			Publish: true,
 		},
 		Node: nodes,

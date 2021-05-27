@@ -78,7 +78,7 @@ func resourceDynDSFRecordSet() *schema.Resource {
 
 func resourceDynDSFRecordSetCreate(d *schema.ResourceData, meta interface{}) error {
 	request := &api.DSFRecordSetRequest{
-		CreateOrUpdateBlock: api.CreateOrUpdateBlock{
+		PublishBlock: api.PublishBlock{
 			Publish: true,
 		},
 		Label:          d.Get("label").(string),
@@ -131,7 +131,7 @@ func resourceDynDSFRecordSetUpdate(d *schema.ResourceData, meta interface{}) err
 	id := d.Id()
 	client := meta.(*api.ConvenientClient)
 	request := &api.DSFRecordSetRequest{
-		CreateOrUpdateBlock: api.CreateOrUpdateBlock{
+		PublishBlock: api.PublishBlock{
 			Publish: true,
 		},
 		Label:        d.Get("label").(string),
@@ -162,7 +162,7 @@ func resourceDynDSFRecordSetDelete(d *schema.ResourceData, meta interface{}) err
 	client := meta.(*api.ConvenientClient)
 
 	traffic_director_id := d.Get("traffic_director_id").(string)
-	publish := api.CreateOrUpdateBlock{
+	publish := api.PublishBlock{
 		Publish: true,
 	}
 	url := fmt.Sprintf("DSFRecordSet/%s/%s", traffic_director_id, id)

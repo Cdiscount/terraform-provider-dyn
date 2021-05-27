@@ -23,7 +23,8 @@ type ResponseBlock struct {
 }
 
 type Publish bool
-type CreateOrUpdateBlock struct {
+
+type PublishBlock struct {
 	Publish Publish `json:"publish"`
 }
 
