@@ -196,3 +196,28 @@ type DSFRecordResponse struct {
 	ResponseBlock
 	Data DSFRecord `json:"data"`
 }
+
+type DSFMonitorResponse struct {
+	ResponseBlock
+	Data DSFMonitor `json:"data"`
+}
+
+type DSFMonitor struct {
+	ID            string             `json:"dsf_monitor_id,omitempty"`
+	Label         string             `json:"label"`
+	Protocol      string             `json:"protocol"`
+	Active        string             `json:"active,omitempty"`
+	ResponseCount string             `json:"response_count"`
+	ProbeInterval string             `json:"probe_interval"`
+	Retries       string             `json:"retries"`
+	Options       *DSFMonitorOptions `json:"options,omitempty"`
+}
+
+type DSFMonitorOptions struct {
+	Timeout  string `json:"timeout,omitempty"`
+	Port     string `json:"port,omitempty"`
+	Path     string `json:"path,omitempty"`
+	Host     string `json:"host,omitempty"`
+	Header   string `json:"header,omitempty"`
+	Expected string `json:"expected,omitempty"`
+}
