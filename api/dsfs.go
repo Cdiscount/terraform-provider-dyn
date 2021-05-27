@@ -188,6 +188,7 @@ type DSFRecordRequest struct {
 	Label      string `json:"label"`
 	Weight     string `json:"weight,omitempty"`
 	Automation string `json:"automation,omitempty"`
+	Eligible   string `json:"eligible,omitempty"`
 	MasterLine string `json:"master_line,omitempty"`
 }
 

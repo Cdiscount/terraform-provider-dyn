@@ -37,6 +37,11 @@ func resourceDynDsfRecord() *schema.Resource {
 				Optional: true,
 				Computed: true,
 			},
+			"eligible": {
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+			},
 			"master_line": {
 				Type:     schema.TypeString,
 				Optional: true,
@@ -54,6 +59,7 @@ func resourceDynDsfRecordCreate(d *schema.ResourceData, meta interface{}) error 
 		Weight:     d.Get("weight").(string),
 		Automation: d.Get("automation").(string),
 		MasterLine: d.Get("master_line").(string),
+		Eligible:   d.Get("eligible").(string),
 	}
 
 	traffic_director_id := d.Get("traffic_director_id").(string)
@@ -101,6 +107,7 @@ func resourceDynDsfRecordUpdate(d *schema.ResourceData, meta interface{}) error 
 		Weight:     d.Get("weight").(string),
 		Automation: d.Get("automation").(string),
 		MasterLine: d.Get("master_line").(string),
+		Eligible:   d.Get("eligible").(string),
 	}
 	response := &api.DSFRecordResponse{}
 
@@ -136,4 +143,5 @@ func load_dsf_record(d *schema.ResourceData, response *api.DSFRecord) {
 	d.Set("weight", response.Weight)
 	d.Set("automation", response.Automation)
 	d.Set("master_line", response.MasterLine)
+	d.Set("eligible", response.Eligible)
 }
