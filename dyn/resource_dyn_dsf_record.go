@@ -29,9 +29,10 @@ func resourceDynDsfRecord() *schema.Resource {
 				Required: true,
 			},
 			"weight": {
-				Type:     schema.TypeInt,
-				Optional: true,
-				Computed: true,
+				Type:         schema.TypeInt,
+				Optional:     true,
+				Default:      1,
+				ValidateFunc: validation.IntBetween(1, 255),
 			},
 			"automation": {
 				Type:         schema.TypeString,
