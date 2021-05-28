@@ -78,6 +78,7 @@ func resourceDynTrafficDirectorRead(d *schema.ResourceData, meta interface{}) er
 	}
 
 	load_dsf_service(d, &response.Data)
+	load_nodes(response.Data.Nodes, d)
 
 	return err
 }
@@ -148,7 +149,6 @@ func updateDsfNodes(d *schema.ResourceData, client *api.ConvenientClient) error 
 func load_dsf_service(d *schema.ResourceData, response *api.DSFService) {
 	d.Set("label", response.Label)
 	d.Set("ttl", response.TTL)
-	load_nodes(response.Nodes, d)
 }
 
 func load_nodes(raw_nodes []api.DSFNode, d *schema.ResourceData) {
