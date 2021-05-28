@@ -110,8 +110,11 @@ func resourceDynTrafficDirectorDelete(d *schema.ResourceData, meta interface{}) 
 	id := d.Id()
 	client := meta.(*api.ConvenientClient)
 
+	publish := api.PublishBlock{
+		Publish: true,
+	}
 	url := fmt.Sprintf("DSF/%s", id)
-	err := client.Do("DELETE", url, nil, nil)
+	err := client.Do("DELETE", url, &publish, nil)
 	if err != nil {
 		return err
 	}
