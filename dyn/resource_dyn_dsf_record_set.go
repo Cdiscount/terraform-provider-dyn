@@ -179,6 +179,6 @@ func load_dsf_record_set(d *schema.ResourceData, response *api.DSFRecordSet) {
 	d.Set("serve_count", response.ServeCount)
 	d.Set("fail_count", response.FailCount)
 	d.Set("trouble_count", response.TroubleCount)
-	d.Set("eligible", response.Eligible)
+	d.Set("eligible", bool(response.Eligible))
 	d.Set("monitor_id", response.MonitorID)
 }

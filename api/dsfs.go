@@ -206,16 +206,16 @@ type DSFMonitor struct {
 	ID            string             `json:"dsf_monitor_id,omitempty"`
 	Label         string             `json:"label"`
 	Protocol      string             `json:"protocol"`
-	Active        string             `json:"active,omitempty"`
-	ResponseCount string             `json:"response_count"`
-	ProbeInterval string             `json:"probe_interval"`
-	Retries       string             `json:"retries"`
+	Active        YNBool             `json:"active,omitempty"`
+	ResponseCount SInt               `json:"response_count"`
+	ProbeInterval SInt               `json:"probe_interval"`
+	Retries       SInt               `json:"retries"`
 	Options       *DSFMonitorOptions `json:"options,omitempty"`
 }
 
 type DSFMonitorOptions struct {
-	Timeout  string `json:"timeout,omitempty"`
-	Port     string `json:"port,omitempty"`
+	Timeout  SInt   `json:"timeout,omitempty"`
+	Port     SInt   `json:"port,omitempty"`
 	Path     string `json:"path,omitempty"`
 	Host     string `json:"host,omitempty"`
 	Header   string `json:"header,omitempty"`

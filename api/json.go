@@ -76,6 +76,10 @@ func (val *SInt) UnmarshalJSON(b []byte) error {
 	if err := json.Unmarshal(b, &s); err != nil {
 		return err
 	}
+	if s == "" {
+		*val = 0
+		return nil
+	}
 	parsed_int, err := strconv.ParseInt(s, 10, 0)
 	if err != nil {
 		return err
@@ -85,7 +89,11 @@ func (val *SInt) UnmarshalJSON(b []byte) error {
 }
 
 func (i SInt) MarshalJSON() ([]byte, error) {
-	val := fmt.Sprintf("%d", i)
+	var val string
+	if i == 0 {
+		val = ""
+	}
+	val = fmt.Sprintf("%d", i)
 	return json.Marshal(val)
 }
 
