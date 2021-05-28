@@ -93,19 +93,19 @@ type DSFRecordSetChain struct {
 
 type DSFRecordSet struct {
 	Status        string      `json:"status"`
-	Eligible      string      `json:"eligible"`
+	Eligible      SBool       `json:"eligible"`
 	ID            string      `json:"dsf_record_set_id"`
 	MonitorID     string      `json:"dsf_monitor_id"`
 	Label         string      `json:"label"`
-	TroubleCount  string      `json:"trouble_count"`
+	TroubleCount  SInt        `json:"trouble_count"`
 	Records       []DSFRecord `json:"records"`
-	FailCount     string      `json:"fail_count"`
+	FailCount     SInt        `json:"fail_count"`
 	TorpidityMax  string      `json:"torpidity_max"`
 	TTLDerived    string      `json:"ttl_derived"`
 	LastMonitored string      `json:"last_monitored"`
-	TTL           string      `json:"ttl"`
+	TTL           SInt        `json:"ttl"`
 	ServiceID     string      `json:"service_id"`
-	ServeCount    string      `json:"serve_count"`
+	ServeCount    SInt        `json:"serve_count"`
 	Automation    string      `json:"automation"`
 	PendingChange string      `json:"pending_change"`
 	RDataClass    string      `json:"rdata_class"`
@@ -167,12 +167,12 @@ type DSFRecordSetRequest struct {
 	PublishBlock
 	Label          string `json:"label"`
 	RDataClass     string `json:"rdata_class"`
-	TTL            string `json:"ttl,omitempty"`
+	TTL            SInt   `json:"ttl,omitempty"`
 	Automation     string `json:"automation,omitempty"`
-	ServeCount     string `json:"serve_count,omitempty"`
-	FailCount      string `json:"fail_count,omitempty"`
-	TroubleCount   string `json:"trouble_count,omitempty"`
-	Eligible       string `json:"eligible,omitempty"`
+	ServeCount     SInt   `json:"serve_count,omitempty"`
+	FailCount      SInt   `json:"fail_count,omitempty"`
+	TroubleCount   SInt   `json:"trouble_count,omitempty"`
+	Eligible       SBool  `json:"eligible,omitempty"`
 	MonitorID      string `json:"dsf_monitor_id,omitempty"`
 	DSFRsfc        string `json:"dsf_record_set_failover_chain_id"`
 	ResponsePoolId string `json:"dsf_response_pool_id"`
