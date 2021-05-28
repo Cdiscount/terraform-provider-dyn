@@ -116,7 +116,7 @@ type DSFRecord struct {
 	Endpoints      []string `json:"endpoints"`
 	RDataClass     string   `json:"rdata_class"`
 	Weight         int      `json:"weight"`
-	Eligible       string   `json:"eligible"`
+	Eligible       SBool    `json:"eligible"`
 	ID             string   `json:"dsf_record_id"`
 	DSFRecordSetID string   `json:"dsf_record_set_id"`
 	//RData           interface{} `json:"rdata"`
@@ -186,9 +186,9 @@ type DSFRecordSetResponse struct {
 type DSFRecordRequest struct {
 	PublishBlock
 	Label      string `json:"label"`
-	Weight     string `json:"weight,omitempty"`
+	Weight     int    `json:"weight,omitempty"`
 	Automation string `json:"automation,omitempty"`
-	Eligible   string `json:"eligible,omitempty"`
+	Eligible   SBool  `json:"eligible"`
 	MasterLine string `json:"master_line,omitempty"`
 }
 
