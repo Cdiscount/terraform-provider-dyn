@@ -71,7 +71,7 @@ type PublishZoneBlock struct {
 	Publish bool `json:"publish"`
 }
 
-func (val *SInt) Unmarshal(b []byte) error {
+func (val *SInt) UnmarshalJSON(b []byte) error {
 	var s string
 	if err := json.Unmarshal(b, &s); err != nil {
 		return err
@@ -89,7 +89,7 @@ func (i SInt) MarshalJSON() ([]byte, error) {
 	return json.Marshal(val)
 }
 
-func (val *YNBool) Unmarshal(b []byte) error {
+func (val *YNBool) UnmarshalJSON(b []byte) error {
 	var s string
 	if err := json.Unmarshal(b, &s); err != nil {
 		return err
@@ -113,7 +113,7 @@ func (p YNBool) MarshalJSON() ([]byte, error) {
 	return json.Marshal(val)
 }
 
-func (val *SBool) Unmarshal(b []byte) error {
+func (val *SBool) UnmarshalJSON(b []byte) error {
 	var s string
 	if err := json.Unmarshal(b, &s); err != nil {
 		return err

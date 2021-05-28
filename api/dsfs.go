@@ -20,7 +20,7 @@ type DSFService struct {
 	ID            string       `json:"service_id"`
 	Label         string       `json:"label"`
 	Active        string       `json:"active"`
-	TTL           string       `json:"ttl"`
+	TTL           SInt         `json:"ttl"`
 	PendingChange string       `json:"pending_change"`
 	Notifiers     []Notifier   `json:"notifiers"`
 	Nodes         []DSFNode    `json:"nodes"`
@@ -30,7 +30,7 @@ type DSFService struct {
 type DSFServiceRequest struct {
 	PublishBlock
 	Label string `json:"label"`
-	TTL   string `json:"ttl"`
+	TTL   SInt   `json:"ttl"`
 }
 
 type DSFResponsePoolRef struct {

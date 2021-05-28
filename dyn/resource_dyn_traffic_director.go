@@ -20,7 +20,7 @@ func resourceDynTrafficDirector() *schema.Resource {
 				Required: true,
 			},
 			"ttl": {
-				Type:     schema.TypeString,
+				Type:     schema.TypeInt,
 				Optional: true,
 				Computed: true,
 			},
@@ -50,7 +50,7 @@ func resourceDynTrafficDirectorCreate(d *schema.ResourceData, meta interface{}) 
 			Publish: true,
 		},
 		Label: d.Get("label").(string),
-		TTL:   d.Get("ttl").(string),
+		TTL:   api.SInt(d.Get("ttl").(int)),
 	}
 	response := &api.DSFResponse{}
 	client := meta.(*api.ConvenientClient)
@@ -91,7 +91,7 @@ func resourceDynTrafficDirectorUpdate(d *schema.ResourceData, meta interface{}) 
 				Publish: true,
 			},
 			Label: d.Get("label").(string),
-			TTL:   d.Get("ttl").(string),
+			TTL:   api.SInt(d.Get("ttl").(int)),
 		}
 		response := &api.DSFResponse{}
 
