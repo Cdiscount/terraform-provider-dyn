@@ -79,7 +79,7 @@ func resourceDynTrafficDirectorRead(d *schema.ResourceData, meta interface{}) er
 
 	load_dsf_service(d, &response.Data)
 
-	return err
+	return nil
 }
 
 func resourceDynTrafficDirectorUpdate(d *schema.ResourceData, meta interface{}) error {
