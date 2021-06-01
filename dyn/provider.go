@@ -52,24 +52,5 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 		Password:     d.Get("password").(string),
 	}
 
-	// client, _ := config.Client()
-	// var response *string
-	// err := client.Do("GET", "AllRecord/cshield.net", nil, response)
-	// type t struct {
-	// 	api.CreateOrUpdateBlock
-	// 	Node api.DSFNode `json:"node"`
-	// }
-	// request := &t{
-	// 	CreateOrUpdateBlock: api.CreateOrUpdateBlock{
-	// 		Publish: true,
-	// 	},
-	// 	Node: api.DSFNode{
-	// 		Zone: "cshield.net",
-	// 		FQDN: "test6.cshield.net",
-	// 	},
-	// }
-	// err := client.Do("POST", "DSFNode/vmKEO9dBtdJ57rr_PhEldxr_rnA", request, response)
-	// panic(fmt.Sprintf("err: %s, resp: %#v", err, response))
-
 	return config.Client()
 }
