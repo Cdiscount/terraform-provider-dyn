@@ -120,6 +120,24 @@ func resourceDynTrafficDirectorDelete(d *schema.ResourceData, meta interface{}) 
 
 func updateDsfNodes(d *schema.ResourceData, client *api.ConvenientClient) error {
 	id := d.Id()
+	request := &api.DSFNodeRequest{
+		CreateOrUpdateBlock: api.CreateOrUpdateBlock{
+			Publish: true,
+		},
+		Node: nodes_from_schema(d),
+	}
+	response := &api.DSFNodeResponse{}
+	url_node := fmt.Sprintf("DSFNode/%s", id)
+
+	err := client.Do("PUT", url_node, request, response)
+	if err != nil {
+		return err
+	}
+	load_nodes(response.Data, d)
+	return nil
+}
+
+func nodes_from_schema(d *schema.ResourceData) []api.DSFNode {
 	raw_nodes := d.Get("node").([]interface{})
 	nodes := make([]api.DSFNode, len(raw_nodes))
 	for i, i_node := range raw_nodes {
@@ -129,20 +147,7 @@ func updateDsfNodes(d *schema.ResourceData, client *api.ConvenientClient) error 
 			FQDN: node["fqdn"].(string),
 		}
 	}
-	request := &api.DSFNodeRequest{
-		CreateOrUpdateBlock: api.CreateOrUpdateBlock{
-			Publish: true,
-		},
-		Node: nodes,
-	}
-	response := &api.DSFNodeResponse{}
-	url_node := fmt.Sprintf("DSFNode/%s", id)
-	err := client.Do("PUT", url_node, request, response)
-	if err != nil {
-		return err
-	}
-	load_nodes(response.Data, d)
-	return nil
+	return nodes
 }
 
 func load_dsf_service(d *schema.ResourceData, response *api.DSFService) {
