@@ -1,5 +1,7 @@
 package api
 
+import "encoding/json"
+
 /*
 This struct represents the request body that would be sent to the DynECT API
 for logging in and getting a session token for future requests.
@@ -18,6 +20,11 @@ type ResponseBlock struct {
 	Status   string         `json:"status"`
 	JobId    int            `json:"job_id,omitempty"`
 	Messages []MessageBlock `json:"msgs,omitempty"`
+}
+
+type Publish bool
+type CreateOrUpdateBlock struct {
+	Publish Publish `json:"publish"`
 }
 
 // Type MessageBlock holds the message information from the server, and is
@@ -55,4 +62,12 @@ type RecordRequest struct {
 // https://help.dyn.com/update-zone-api/
 type PublishZoneBlock struct {
 	Publish bool `json:"publish"`
+}
+
+func (p Publish) MarshalJSON() ([]byte, error) {
+	val := "N"
+	if p {
+		val = "Y"
+	}
+	return json.Marshal(val)
 }

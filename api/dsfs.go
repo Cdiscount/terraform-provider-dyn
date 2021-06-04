@@ -27,8 +27,23 @@ type DSFService struct {
 	Rulesets      []DSFRuleset `json:"rulesets"`
 }
 
+type DSFServiceRequest struct {
+	CreateOrUpdateBlock
+	Label string `json:"label"`
+	TTL   string `json:"ttl"`
+}
+
+type DSFResponsePoolRef struct {
+	ID string `json:"dsf_response_pool_id"`
+}
+type DSFRulesetRequest struct {
+	CreateOrUpdateBlock
+	Label        string                `json:"label"`
+	CriteriaType string                `json:"criteria_type"`
+	ResponsePool *[]DSFResponsePoolRef `json:"response_pools"`
+}
 type DSFRuleset struct {
-	ID            string            `json:"dsf_ruleset_id`
+	ID            string            `json:"dsf_ruleset_id"`
 	Label         string            `json:"label"`
 	CriteriaType  string            `json:"criteria_type"`
 	Criteria      interface{}       `json:"criteria"`
@@ -37,7 +52,20 @@ type DSFRuleset struct {
 	PendingChange string            `json:"pending_change"`
 	ResponsePools []DSFResponsePool `json:"response_pools"`
 }
+type DSFRulesetResponse struct {
+	ResponseBlock
+	Data DSFRuleset `json:"data"`
+}
 
+type DSFResponsePoolResponse struct {
+	ResponseBlock
+	Data DSFResponsePool `json:"data"`
+}
+type DSFResponsePoolRequest struct {
+	CreateOrUpdateBlock
+	Label      string `json:"label"`
+	Automation string `json:"automation",omit_empty`
+}
 type DSFResponsePool struct {
 	ID            string              `json:"dsf_response_pool_id"`
 	Label         string              `json:"label"`
@@ -80,6 +108,7 @@ type DSFRecordSet struct {
 	ServeCount    string      `json:"serve_count"`
 	Automation    string      `json:"automation"`
 	PendingChange string      `json:"pending_change"`
+	RDataClass    string      `json:"rdata_class"`
 }
 
 type DSFRecord struct {
@@ -114,4 +143,32 @@ type Notifier struct {
 	Label      string `json:"label"`
 	Recipients string `json:"recipients"`
 	Active     string `json:"active"`
+}
+
+type DSFRsfcRequest struct {
+	CreateOrUpdateBlock
+	Label string `json:"label"`
+}
+type DSFRsfcResponse struct {
+	ResponseBlock
+	Data DSFRecordSetChain `json:"data"`
+}
+type DSFRecordSetRequest struct {
+	CreateOrUpdateBlock
+	Label          string `json:"label"`
+	RDataClass     string `json:"rdata_class"`
+	TTL            string `json:"ttl,omitempty"`
+	Automation     string `json:"automation,omitempty"`
+	ServeCount     string `json:"serve_count,omitempty"`
+	FailCount      string `json:"fail_count,omitempty"`
+	TroubleCount   string `json:"trouble_count,omitempty"`
+	Eligible       string `json:"eligible,omitempty"`
+	MonitorID      string `json:"dsf_monitor_id,omitempty"`
+	DSFRsfc        string `json:"dsf_record_set_failover_chain_id"`
+	ResponsePoolId string `json:"dsf_response_pool_id"`
+}
+
+type DSFRecordSetResponse struct {
+	ResponseBlock
+	Data DSFRecordSet `json:"data"`
 }
