@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 	"gitlab.cshield.io/cshield.tech/infra/terraform-provider-dyn/api"
 )
 
@@ -28,19 +29,21 @@ func resourceDynDsfRecord() *schema.Resource {
 				Required: true,
 			},
 			"weight": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
+				Type:         schema.TypeInt,
+				Optional:     true,
+				Default:      1,
+				ValidateFunc: validation.IntBetween(1, 255),
 			},
 			"automation": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
+				Type:         schema.TypeString,
+				Optional:     true,
+				Computed:     true,
+				ValidateFunc: validation.StringInSlice([]string{"auto", "auto_down", "manual"}, false),
 			},
 			"eligible": {
-				Type:     schema.TypeString,
+				Type:     schema.TypeBool,
 				Optional: true,
-				Computed: true,
+				Default:  true,
 			},
 			"master_line": {
 				Type:     schema.TypeString,
@@ -51,16 +54,7 @@ func resourceDynDsfRecord() *schema.Resource {
 }
 
 func resourceDynDsfRecordCreate(d *schema.ResourceData, meta interface{}) error {
-	request := &api.DSFRecordRequest{
-		PublishBlock: api.PublishBlock{
-			Publish: true,
-		},
-		Label:      d.Get("label").(string),
-		Weight:     d.Get("weight").(string),
-		Automation: d.Get("automation").(string),
-		MasterLine: d.Get("master_line").(string),
-		Eligible:   d.Get("eligible").(string),
-	}
+	request := computeRequest(d)
 
 	traffic_director_id := d.Get("traffic_director_id").(string)
 	record_set_id := d.Get("record_set_id").(string)
@@ -99,16 +93,7 @@ func resourceDynDsfRecordRead(d *schema.ResourceData, meta interface{}) error {
 
 func resourceDynDsfRecordUpdate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*api.ConvenientClient)
-	request := &api.DSFRecordRequest{
-		PublishBlock: api.PublishBlock{
-			Publish: true,
-		},
-		Label:      d.Get("label").(string),
-		Weight:     d.Get("weight").(string),
-		Automation: d.Get("automation").(string),
-		MasterLine: d.Get("master_line").(string),
-		Eligible:   d.Get("eligible").(string),
-	}
+	request := computeRequest(d)
 	response := &api.DSFRecordResponse{}
 
 	id := d.Id()
@@ -130,13 +115,30 @@ func resourceDynDsfRecordDelete(d *schema.ResourceData, meta interface{}) error 
 	id := d.Id()
 	client := meta.(*api.ConvenientClient)
 
+	request := api.PublishBlock{
+		Publish: true,
+	}
 	url := fmt.Sprintf("DSFRecord/%s/%s", traffic_director_id, id)
-	err := client.Do("DELETE", url, nil, nil)
+	err := client.Do("DELETE", url, &request, nil)
 	if err != nil {
 		return err
 	}
 
 	return nil
+}
+
+func computeRequest(d *schema.ResourceData) *api.DSFRecordRequest {
+	request := &api.DSFRecordRequest{
+		PublishBlock: api.PublishBlock{
+			Publish: true,
+		},
+		Label:      d.Get("label").(string),
+		Weight:     d.Get("weight").(int),
+		Automation: d.Get("automation").(string),
+		MasterLine: d.Get("master_line").(string),
+		Eligible:   api.SBool(d.Get("eligible").(bool)),
+	}
+	return request
 }
 
 func load_dsf_record(d *schema.ResourceData, response *api.DSFRecord) {

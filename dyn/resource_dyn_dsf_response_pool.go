@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 	"gitlab.cshield.io/cshield.tech/infra/terraform-provider-dyn/api"
 )
 
@@ -20,9 +21,10 @@ func resourceDynDSFResponsePool() *schema.Resource {
 				Required: true,
 			},
 			"automation": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
+				Type:         schema.TypeString,
+				Optional:     true,
+				Computed:     true,
+				ValidateFunc: validation.StringInSlice([]string{"auto", "auto_down", "manual"}, false),
 			},
 			"traffic_director_id": {
 				Type:     schema.TypeString,

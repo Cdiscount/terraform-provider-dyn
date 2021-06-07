@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 	"gitlab.cshield.io/cshield.tech/infra/terraform-provider-dyn/api"
 )
 
@@ -20,25 +21,29 @@ func resourceDynDSFMonitor() *schema.Resource {
 				Required: true,
 			},
 			"protocol": {
-				Type:     schema.TypeString,
-				Required: true,
+				Type:         schema.TypeString,
+				Required:     true,
+				ValidateFunc: validation.StringInSlice([]string{"HTTP", "HTTPS", "PING", "SMTP", "TCP"}, false),
 			},
 			"response_count": {
-				Type:     schema.TypeString,
-				Required: true,
+				Type:         schema.TypeInt,
+				Required:     true,
+				ValidateFunc: validation.IntBetween(0, 3),
 			},
 			"probe_interval": {
-				Type:     schema.TypeString,
-				Required: true,
+				Type:         schema.TypeInt,
+				Required:     true,
+				ValidateFunc: validation.IntInSlice([]int{60, 300, 600, 900}),
 			},
 			"retries": {
-				Type:     schema.TypeString,
-				Required: true,
+				Type:         schema.TypeInt,
+				Required:     true,
+				ValidateFunc: validation.IntBetween(0, 2),
 			},
 			"active": {
-				Type:     schema.TypeString,
+				Type:     schema.TypeBool,
 				Optional: true,
-				Computed: true,
+				Default:  false,
 			},
 			"options": {
 				Type:     schema.TypeList,
@@ -48,12 +53,12 @@ func resourceDynDSFMonitor() *schema.Resource {
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"timeout": {
-							Type:     schema.TypeString,
+							Type:     schema.TypeInt,
 							Optional: true,
 							Computed: true,
 						},
 						"port": {
-							Type:     schema.TypeString,
+							Type:     schema.TypeInt,
 							Optional: true,
 							Computed: true,
 						},
@@ -152,8 +157,8 @@ func createRequest(d *schema.ResourceData) *api.DSFMonitor {
 	if len(raw_options) > 0 {
 		opts := raw_options[0].(map[string]interface{})
 		options = &api.DSFMonitorOptions{
-			Timeout:  opts["timeout"].(string),
-			Port:     opts["port"].(string),
+			Timeout:  api.SInt(opts["timeout"].(int)),
+			Port:     api.SInt(opts["port"].(int)),
 			Path:     opts["path"].(string),
 			Host:     opts["host"].(string),
 			Header:   opts["header"].(string),
@@ -163,10 +168,10 @@ func createRequest(d *schema.ResourceData) *api.DSFMonitor {
 	request := &api.DSFMonitor{
 		Label:         d.Get("label").(string),
 		Protocol:      d.Get("protocol").(string),
-		ResponseCount: d.Get("response_count").(string),
-		ProbeInterval: d.Get("probe_interval").(string),
-		Retries:       d.Get("retries").(string),
-		Active:        d.Get("active").(string),
+		ResponseCount: api.SInt(d.Get("response_count").(int)),
+		ProbeInterval: api.SInt(d.Get("probe_interval").(int)),
+		Retries:       api.SInt(d.Get("retries").(int)),
+		Active:        api.YNBool(d.Get("active").(bool)),
 		Options:       options,
 	}
 	return request

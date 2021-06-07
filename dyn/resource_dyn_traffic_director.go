@@ -20,7 +20,7 @@ func resourceDynTrafficDirector() *schema.Resource {
 				Required: true,
 			},
 			"ttl": {
-				Type:     schema.TypeString,
+				Type:     schema.TypeInt,
 				Optional: true,
 				Computed: true,
 			},
@@ -50,7 +50,7 @@ func resourceDynTrafficDirectorCreate(d *schema.ResourceData, meta interface{}) 
 			Publish: true,
 		},
 		Label: d.Get("label").(string),
-		TTL:   d.Get("ttl").(string),
+		TTL:   api.SInt(d.Get("ttl").(int)),
 	}
 	response := &api.DSFResponse{}
 	client := meta.(*api.ConvenientClient)
@@ -78,6 +78,7 @@ func resourceDynTrafficDirectorRead(d *schema.ResourceData, meta interface{}) er
 	}
 
 	load_dsf_service(d, &response.Data)
+	load_nodes(response.Data.Nodes, d)
 
 	return nil
 }
@@ -91,7 +92,7 @@ func resourceDynTrafficDirectorUpdate(d *schema.ResourceData, meta interface{}) 
 				Publish: true,
 			},
 			Label: d.Get("label").(string),
-			TTL:   d.Get("ttl").(string),
+			TTL:   api.SInt(d.Get("ttl").(int)),
 		}
 		response := &api.DSFResponse{}
 
@@ -109,8 +110,11 @@ func resourceDynTrafficDirectorDelete(d *schema.ResourceData, meta interface{}) 
 	id := d.Id()
 	client := meta.(*api.ConvenientClient)
 
+	publish := api.PublishBlock{
+		Publish: true,
+	}
 	url := fmt.Sprintf("DSF/%s", id)
-	err := client.Do("DELETE", url, nil, nil)
+	err := client.Do("DELETE", url, &publish, nil)
 	if err != nil {
 		return err
 	}
@@ -153,7 +157,6 @@ func nodes_from_schema(d *schema.ResourceData) []api.DSFNode {
 func load_dsf_service(d *schema.ResourceData, response *api.DSFService) {
 	d.Set("label", response.Label)
 	d.Set("ttl", response.TTL)
-	load_nodes(response.Nodes, d)
 }
 
 func load_nodes(raw_nodes []api.DSFNode, d *schema.ResourceData) {

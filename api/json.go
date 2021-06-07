@@ -1,6 +1,10 @@
 package api
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"fmt"
+	"strconv"
+)
 
 /*
 This struct represents the request body that would be sent to the DynECT API
@@ -22,10 +26,12 @@ type ResponseBlock struct {
 	Messages []MessageBlock `json:"msgs,omitempty"`
 }
 
-type Publish bool
+type YNBool bool
+type SBool bool
+type SInt int
 
 type PublishBlock struct {
-	Publish Publish `json:"publish"`
+	Publish YNBool `json:"publish"`
 }
 
 // Type MessageBlock holds the message information from the server, and is
@@ -65,10 +71,76 @@ type PublishZoneBlock struct {
 	Publish bool `json:"publish"`
 }
 
-func (p Publish) MarshalJSON() ([]byte, error) {
+func (val *SInt) UnmarshalJSON(b []byte) error {
+	var s string
+	if err := json.Unmarshal(b, &s); err != nil {
+		return err
+	}
+	if s == "" {
+		*val = 0
+		return nil
+	}
+	parsed_int, err := strconv.ParseInt(s, 10, 0)
+	if err != nil {
+		return err
+	}
+	*val = SInt(parsed_int)
+	return nil
+}
+
+func (i SInt) MarshalJSON() ([]byte, error) {
+	var val string
+	if i == 0 {
+		val = ""
+	}
+	val = fmt.Sprintf("%d", i)
+	return json.Marshal(val)
+}
+
+func (val *YNBool) UnmarshalJSON(b []byte) error {
+	var s string
+	if err := json.Unmarshal(b, &s); err != nil {
+		return err
+	}
+	switch s {
+	case "Y":
+		*val = true
+	case "N":
+		*val = false
+	default:
+		return fmt.Errorf("Unknown boolean value for '%s'", s)
+	}
+	return nil
+}
+
+func (p YNBool) MarshalJSON() ([]byte, error) {
 	val := "N"
 	if p {
 		val = "Y"
 	}
 	return json.Marshal(val)
+}
+
+func (val *SBool) UnmarshalJSON(b []byte) error {
+	var s string
+	if err := json.Unmarshal(b, &s); err != nil {
+		return err
+	}
+	switch s {
+	case "true":
+		*val = true
+	case "false":
+		*val = false
+	default:
+		return fmt.Errorf("Unknown boolean value for '%s'", s)
+	}
+	return nil
+}
+
+func (p SBool) MarshalJSON() ([]byte, error) {
+	if p {
+		return json.Marshal("true")
+	} else {
+		return json.Marshal("false")
+	}
 }

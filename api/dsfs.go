@@ -20,7 +20,7 @@ type DSFService struct {
 	ID            string       `json:"service_id"`
 	Label         string       `json:"label"`
 	Active        string       `json:"active"`
-	TTL           string       `json:"ttl"`
+	TTL           SInt         `json:"ttl"`
 	PendingChange string       `json:"pending_change"`
 	Notifiers     []Notifier   `json:"notifiers"`
 	Nodes         []DSFNode    `json:"nodes"`
@@ -30,7 +30,7 @@ type DSFService struct {
 type DSFServiceRequest struct {
 	PublishBlock
 	Label string `json:"label"`
-	TTL   string `json:"ttl"`
+	TTL   SInt   `json:"ttl"`
 }
 
 type DSFResponsePoolRef struct {
@@ -93,19 +93,19 @@ type DSFRecordSetChain struct {
 
 type DSFRecordSet struct {
 	Status        string      `json:"status"`
-	Eligible      string      `json:"eligible"`
+	Eligible      SBool       `json:"eligible"`
 	ID            string      `json:"dsf_record_set_id"`
 	MonitorID     string      `json:"dsf_monitor_id"`
 	Label         string      `json:"label"`
-	TroubleCount  string      `json:"trouble_count"`
+	TroubleCount  SInt        `json:"trouble_count"`
 	Records       []DSFRecord `json:"records"`
-	FailCount     string      `json:"fail_count"`
+	FailCount     SInt        `json:"fail_count"`
 	TorpidityMax  string      `json:"torpidity_max"`
 	TTLDerived    string      `json:"ttl_derived"`
 	LastMonitored string      `json:"last_monitored"`
-	TTL           string      `json:"ttl"`
+	TTL           SInt        `json:"ttl"`
 	ServiceID     string      `json:"service_id"`
-	ServeCount    string      `json:"serve_count"`
+	ServeCount    SInt        `json:"serve_count"`
 	Automation    string      `json:"automation"`
 	PendingChange string      `json:"pending_change"`
 	RDataClass    string      `json:"rdata_class"`
@@ -116,7 +116,7 @@ type DSFRecord struct {
 	Endpoints      []string `json:"endpoints"`
 	RDataClass     string   `json:"rdata_class"`
 	Weight         int      `json:"weight"`
-	Eligible       string   `json:"eligible"`
+	Eligible       SBool    `json:"eligible"`
 	ID             string   `json:"dsf_record_id"`
 	DSFRecordSetID string   `json:"dsf_record_set_id"`
 	//RData           interface{} `json:"rdata"`
@@ -167,12 +167,12 @@ type DSFRecordSetRequest struct {
 	PublishBlock
 	Label          string `json:"label"`
 	RDataClass     string `json:"rdata_class"`
-	TTL            string `json:"ttl,omitempty"`
+	TTL            SInt   `json:"ttl,omitempty"`
 	Automation     string `json:"automation,omitempty"`
-	ServeCount     string `json:"serve_count,omitempty"`
-	FailCount      string `json:"fail_count,omitempty"`
-	TroubleCount   string `json:"trouble_count,omitempty"`
-	Eligible       string `json:"eligible,omitempty"`
+	ServeCount     SInt   `json:"serve_count,omitempty"`
+	FailCount      SInt   `json:"fail_count,omitempty"`
+	TroubleCount   SInt   `json:"trouble_count,omitempty"`
+	Eligible       SBool  `json:"eligible,omitempty"`
 	MonitorID      string `json:"dsf_monitor_id,omitempty"`
 	DSFRsfc        string `json:"dsf_record_set_failover_chain_id"`
 	ResponsePoolId string `json:"dsf_response_pool_id"`
@@ -186,9 +186,9 @@ type DSFRecordSetResponse struct {
 type DSFRecordRequest struct {
 	PublishBlock
 	Label      string `json:"label"`
-	Weight     string `json:"weight,omitempty"`
+	Weight     int    `json:"weight,omitempty"`
 	Automation string `json:"automation,omitempty"`
-	Eligible   string `json:"eligible,omitempty"`
+	Eligible   SBool  `json:"eligible"`
 	MasterLine string `json:"master_line,omitempty"`
 }
 
@@ -206,16 +206,16 @@ type DSFMonitor struct {
 	ID            string             `json:"dsf_monitor_id,omitempty"`
 	Label         string             `json:"label"`
 	Protocol      string             `json:"protocol"`
-	Active        string             `json:"active,omitempty"`
-	ResponseCount string             `json:"response_count"`
-	ProbeInterval string             `json:"probe_interval"`
-	Retries       string             `json:"retries"`
+	Active        YNBool             `json:"active,omitempty"`
+	ResponseCount SInt               `json:"response_count"`
+	ProbeInterval SInt               `json:"probe_interval"`
+	Retries       SInt               `json:"retries"`
 	Options       *DSFMonitorOptions `json:"options,omitempty"`
 }
 
 type DSFMonitorOptions struct {
-	Timeout  string `json:"timeout,omitempty"`
-	Port     string `json:"port,omitempty"`
+	Timeout  SInt   `json:"timeout,omitempty"`
+	Port     SInt   `json:"port,omitempty"`
 	Path     string `json:"path,omitempty"`
 	Host     string `json:"host,omitempty"`
 	Header   string `json:"header,omitempty"`
