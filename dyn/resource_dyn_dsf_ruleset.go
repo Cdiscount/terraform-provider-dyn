@@ -36,7 +36,7 @@ func resourceDynDSFRuleset() *schema.Resource {
 
 func resourceDynDSFRulesetCreate(d *schema.ResourceData, meta interface{}) error {
 	request := &api.DSFRulesetRequest{
-		CreateOrUpdateBlock: api.CreateOrUpdateBlock{
+		PublishBlock: api.PublishBlock{
 			Publish: true,
 		},
 		Label:        d.Get("label").(string),
@@ -93,7 +93,7 @@ func resourceDynDSFRulesetUpdate(d *schema.ResourceData, meta interface{}) error
 	id := d.Id()
 	client := meta.(*api.ConvenientClient)
 	request := &api.DSFRulesetRequest{
-		CreateOrUpdateBlock: api.CreateOrUpdateBlock{
+		PublishBlock: api.PublishBlock{
 			Publish: true,
 		},
 		Label:        d.Get("label").(string),
@@ -118,7 +118,7 @@ func resourceDynDSFRulesetDelete(d *schema.ResourceData, meta interface{}) error
 	client := meta.(*api.ConvenientClient)
 
 	traffic_director_id := d.Get("traffic_director_id").(string)
-	publish := api.CreateOrUpdateBlock{
+	publish := api.PublishBlock{
 		Publish: true,
 	}
 	url := fmt.Sprintf("DSFRuleset/%s/%s", traffic_director_id, id)

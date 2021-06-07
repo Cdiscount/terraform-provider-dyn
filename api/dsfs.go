@@ -28,7 +28,7 @@ type DSFService struct {
 }
 
 type DSFServiceRequest struct {
-	CreateOrUpdateBlock
+	PublishBlock
 	Label string `json:"label"`
 	TTL   string `json:"ttl"`
 }
@@ -37,7 +37,7 @@ type DSFResponsePoolRef struct {
 	ID string `json:"dsf_response_pool_id"`
 }
 type DSFRulesetRequest struct {
-	CreateOrUpdateBlock
+	PublishBlock
 	Label        string                `json:"label"`
 	CriteriaType string                `json:"criteria_type"`
 	ResponsePool *[]DSFResponsePoolRef `json:"response_pools"`
@@ -62,7 +62,7 @@ type DSFResponsePoolResponse struct {
 	Data DSFResponsePool `json:"data"`
 }
 type DSFResponsePoolRequest struct {
-	CreateOrUpdateBlock
+	PublishBlock
 	Label      string `json:"label"`
 	Automation string `json:"automation",omit_empty`
 }
@@ -134,7 +134,7 @@ type DSFRecord struct {
 }
 
 type DSFNodeRequest struct {
-	CreateOrUpdateBlock
+	PublishBlock
 	Node []DSFNode `json:"nodes"`
 }
 
@@ -156,7 +156,7 @@ type Notifier struct {
 }
 
 type DSFRsfcRequest struct {
-	CreateOrUpdateBlock
+	PublishBlock
 	Label string `json:"label"`
 }
 type DSFRsfcResponse struct {
@@ -164,7 +164,7 @@ type DSFRsfcResponse struct {
 	Data DSFRecordSetChain `json:"data"`
 }
 type DSFRecordSetRequest struct {
-	CreateOrUpdateBlock
+	PublishBlock
 	Label          string `json:"label"`
 	RDataClass     string `json:"rdata_class"`
 	TTL            string `json:"ttl,omitempty"`
@@ -184,7 +184,7 @@ type DSFRecordSetResponse struct {
 }
 
 type DSFRecordRequest struct {
-	CreateOrUpdateBlock
+	PublishBlock
 	Label      string `json:"label"`
 	Weight     string `json:"weight,omitempty"`
 	Automation string `json:"automation,omitempty"`

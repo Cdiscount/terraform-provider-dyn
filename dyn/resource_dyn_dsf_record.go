@@ -52,7 +52,7 @@ func resourceDynDsfRecord() *schema.Resource {
 
 func resourceDynDsfRecordCreate(d *schema.ResourceData, meta interface{}) error {
 	request := &api.DSFRecordRequest{
-		CreateOrUpdateBlock: api.CreateOrUpdateBlock{
+		PublishBlock: api.PublishBlock{
 			Publish: true,
 		},
 		Label:      d.Get("label").(string),
@@ -100,7 +100,7 @@ func resourceDynDsfRecordRead(d *schema.ResourceData, meta interface{}) error {
 func resourceDynDsfRecordUpdate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*api.ConvenientClient)
 	request := &api.DSFRecordRequest{
-		CreateOrUpdateBlock: api.CreateOrUpdateBlock{
+		PublishBlock: api.PublishBlock{
 			Publish: true,
 		},
 		Label:      d.Get("label").(string),

@@ -34,7 +34,7 @@ func resourceDynDSFResponsePool() *schema.Resource {
 
 func resourceDynDSFResponsePoolCreate(d *schema.ResourceData, meta interface{}) error {
 	request := &api.DSFResponsePoolRequest{
-		CreateOrUpdateBlock: api.CreateOrUpdateBlock{
+		PublishBlock: api.PublishBlock{
 			Publish: true,
 		},
 		Label:      d.Get("label").(string),
@@ -78,7 +78,7 @@ func resourceDynDSFResponsePoolUpdate(d *schema.ResourceData, meta interface{}) 
 	id := d.Id()
 	client := meta.(*api.ConvenientClient)
 	request := &api.DSFResponsePoolRequest{
-		CreateOrUpdateBlock: api.CreateOrUpdateBlock{
+		PublishBlock: api.PublishBlock{
 			Publish: true,
 		},
 		Label:      d.Get("label").(string),
@@ -102,7 +102,7 @@ func resourceDynDSFResponsePoolDelete(d *schema.ResourceData, meta interface{}) 
 	client := meta.(*api.ConvenientClient)
 
 	traffic_director_id := d.Get("traffic_director_id").(string)
-	publish := api.CreateOrUpdateBlock{
+	publish := api.PublishBlock{
 		Publish: true,
 	}
 	url := fmt.Sprintf("DSFResponsePool/%s/%s", traffic_director_id, id)

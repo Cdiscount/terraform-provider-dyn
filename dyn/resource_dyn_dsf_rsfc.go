@@ -33,7 +33,7 @@ func resourceDynDSFRsfc() *schema.Resource {
 
 func resourceDynDSFRsfcCreate(d *schema.ResourceData, meta interface{}) error {
 	request := &api.DSFRsfcRequest{
-		CreateOrUpdateBlock: api.CreateOrUpdateBlock{
+		PublishBlock: api.PublishBlock{
 			Publish: true,
 		},
 		Label: d.Get("label").(string),
@@ -77,7 +77,7 @@ func resourceDynDSFRsfcUpdate(d *schema.ResourceData, meta interface{}) error {
 	id := d.Id()
 	client := meta.(*api.ConvenientClient)
 	request := &api.DSFRsfcRequest{
-		CreateOrUpdateBlock: api.CreateOrUpdateBlock{
+		PublishBlock: api.PublishBlock{
 			Publish: true,
 		},
 		Label: d.Get("label").(string),
@@ -100,7 +100,7 @@ func resourceDynDSFRsfcDelete(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*api.ConvenientClient)
 
 	traffic_director_id := d.Get("traffic_director_id").(string)
-	publish := api.CreateOrUpdateBlock{
+	publish := api.PublishBlock{
 		Publish: true,
 	}
 	url := fmt.Sprintf("DSFRecordSetFailoverChain/%s/%s", traffic_director_id, id)
