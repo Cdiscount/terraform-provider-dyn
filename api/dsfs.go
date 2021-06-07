@@ -133,6 +133,16 @@ type DSFRecord struct {
 	Publish         string `json:"publish",omit_empty`
 }
 
+type DSFNodeRequest struct {
+	CreateOrUpdateBlock
+	Node []DSFNode `json:"nodes"`
+}
+
+type DSFNodeResponse struct {
+	ResponseBlock
+	Data []DSFNode `json:"data"`
+}
+
 type DSFNode struct {
 	Zone string `json:"zone"`
 	FQDN string `json:"fqdn"`
@@ -171,4 +181,43 @@ type DSFRecordSetRequest struct {
 type DSFRecordSetResponse struct {
 	ResponseBlock
 	Data DSFRecordSet `json:"data"`
+}
+
+type DSFRecordRequest struct {
+	CreateOrUpdateBlock
+	Label      string `json:"label"`
+	Weight     string `json:"weight,omitempty"`
+	Automation string `json:"automation,omitempty"`
+	Eligible   string `json:"eligible,omitempty"`
+	MasterLine string `json:"master_line,omitempty"`
+}
+
+type DSFRecordResponse struct {
+	ResponseBlock
+	Data DSFRecord `json:"data"`
+}
+
+type DSFMonitorResponse struct {
+	ResponseBlock
+	Data DSFMonitor `json:"data"`
+}
+
+type DSFMonitor struct {
+	ID            string             `json:"dsf_monitor_id,omitempty"`
+	Label         string             `json:"label"`
+	Protocol      string             `json:"protocol"`
+	Active        string             `json:"active,omitempty"`
+	ResponseCount string             `json:"response_count"`
+	ProbeInterval string             `json:"probe_interval"`
+	Retries       string             `json:"retries"`
+	Options       *DSFMonitorOptions `json:"options,omitempty"`
+}
+
+type DSFMonitorOptions struct {
+	Timeout  string `json:"timeout,omitempty"`
+	Port     string `json:"port,omitempty"`
+	Path     string `json:"path,omitempty"`
+	Host     string `json:"host,omitempty"`
+	Header   string `json:"header,omitempty"`
+	Expected string `json:"expected,omitempty"`
 }
