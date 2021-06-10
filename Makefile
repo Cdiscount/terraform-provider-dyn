@@ -1,4 +1,4 @@
-TEST?=$$(go list ./... | grep -v 'vendor')
+TEST?=$$(go list ./...)
 HOSTNAME=cshield
 NAMESPACE=dns
 NAME=dyn
@@ -30,9 +30,9 @@ install: build
 	mv ${BINARY} ~/.terraform.d/plugins/${HOSTNAME}/${NAMESPACE}/${NAME}/${VERSION}/${OS_ARCH}
 
 .PHONY: test
-test: 
-	go test -i $(TEST) || exit 1                                                   
-	echo $(TEST) | xargs -t -n4 go test $(TESTARGS) -timeout=30s -parallel=4                    
+test:
+	go test -i $(TEST) || exit 1
+	echo $(TEST) | xargs -t -n4 go test $(TESTARGS) -timeout=30s -parallel=4
 
-testacc: 
+testacc:
 	TF_ACC=1 go test $(TEST) -v $(TESTARGS) -timeout 120m
