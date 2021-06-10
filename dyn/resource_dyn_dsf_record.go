@@ -17,37 +17,53 @@ func resourceDynDsfRecord() *schema.Resource {
 
 		Schema: map[string]*schema.Schema{
 			"record_set_id": {
-				Type:     schema.TypeString,
-				Required: true,
+				Type:        schema.TypeString,
+				Required:    true,
+				ForceNew:    true,
+				Description: "The record set in which this record is added",
 			},
 			"traffic_director_id": {
-				Type:     schema.TypeString,
-				Required: true,
+				Type:        schema.TypeString,
+				Required:    true,
+				ForceNew:    true,
+				Description: "The traffic director ID",
 			},
 			"label": {
-				Type:     schema.TypeString,
-				Required: true,
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "A label for the Record",
 			},
 			"weight": {
 				Type:         schema.TypeInt,
 				Optional:     true,
 				Default:      1,
 				ValidateFunc: validation.IntBetween(1, 255),
+				Description:  `Weight for the Record. Defaults to 1.
+  * Valid values for A or AAAA records: 1 – 15.
+  * Valid values for CNAME records: 1 – 255.`,
 			},
 			"automation": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				Computed:     true,
 				ValidateFunc: validation.StringInSlice([]string{"auto", "auto_down", "manual"}, false),
+				Description: `Defines how eligible can be changed in response to monitoring.
+  * auto — Sets the serve_mode field to ‘Monitor & Obey’. Default.
+  * auto_down — Sets the serve_mode field to ‘Monitor & Remove’.
+  * manual — Couples with eligible value to determine other serve_mode field values.`,
 			},
 			"eligible": {
 				Type:     schema.TypeBool,
 				Optional: true,
 				Default:  true,
+				Description: `Indicates whether or not the Record can be served.
+  * false — When automation is set to manual, sets the serve_mode field to ‘Do Not Serve’.
+  * true — Default. When automation is set to manual, sets the serve_mode field to ‘Always Serve’.`,
 			},
 			"master_line": {
-				Type:     schema.TypeString,
-				Optional: true,
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "The value to put in the record, i.e. 1.2.3.4 for a DNS A record",
 			},
 		},
 	}

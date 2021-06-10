@@ -37,5 +37,5 @@ test:
 testacc: 
 	TF_ACC=1 go test $(TEST) -v $(TESTARGS) -timeout 120m
 
-docs: dyn/*.go
+docs: dyn/*.go examples/**/*
 	go generate

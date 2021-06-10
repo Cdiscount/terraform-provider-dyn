@@ -17,70 +17,101 @@ func resourceDynDSFMonitor() *schema.Resource {
 
 		Schema: map[string]*schema.Schema{
 			"label": {
-				Type:     schema.TypeString,
-				Required: true,
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "A label to identify the Monitor",
 			},
 			"protocol": {
 				Type:         schema.TypeString,
 				Required:     true,
 				ValidateFunc: validation.StringInSlice([]string{"HTTP", "HTTPS", "PING", "SMTP", "TCP"}, false),
+				Description: `The protocol to monitor
+Valid values:
+  * HTTP
+  * HTTPS
+  * PING
+  * SMTP
+  * TCP`,
 			},
 			"response_count": {
 				Type:         schema.TypeInt,
 				Required:     true,
 				ValidateFunc: validation.IntBetween(0, 3),
+				Description: `Minimum required ‘up’ agent responses to report response pool host as ‘up’. If ‘up’ responses are less than the minimum, host is set to failover.
+
+Valid values: 0, 1, 2 or 3.`,
 			},
 			"probe_interval": {
 				Type:         schema.TypeInt,
 				Required:     true,
 				ValidateFunc: validation.IntInSlice([]int{60, 300, 600, 900}),
+				Description: `How often to run the monitor. Must be twice the TTL setting.
+Valid values:
+  * 60 – Every minute
+  * 300 – Every 5 minutes
+  * 600 – Every 10 minutes
+  * 900 – Every 15 minutes`,
 			},
 			"retries": {
 				Type:         schema.TypeInt,
 				Required:     true,
 				ValidateFunc: validation.IntBetween(0, 2),
+				Description: `How many retries the monitor should attempt on failure before giving up.
+Valid values:
+  * 0
+  * 1
+  * 2`,
 			},
 			"active": {
-				Type:     schema.TypeBool,
-				Optional: true,
-				Default:  false,
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Default:     false,
+				Description: "Indicates if the Monitor is active",
 			},
 			"options": {
-				Type:     schema.TypeList,
-				Optional: true,
-				MaxItems: 1,
-				Computed: true,
+				Type:        schema.TypeList,
+				Optional:    true,
+				MaxItems:    1,
+				Computed:    true,
+				Description: "Options that pertain to the Monitor",
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"timeout": {
-							Type:     schema.TypeInt,
-							Optional: true,
-							Computed: true,
+							Type:        schema.TypeInt,
+							Optional:    true,
+							Computed:    true,
+							Description: "Time (in seconds) before the connection attempt times out",
 						},
 						"port": {
-							Type:     schema.TypeInt,
-							Optional: true,
-							Computed: true,
+							Type:        schema.TypeInt,
+							Optional:    true,
+							Computed:    true,
+							Description: "For HTTP(S)/SMTP/TCP probes, an alternate connection port. Leaving the field blank means it will monitor the default port (80 for HTTP and TCP, 443 for HTTPS, and 25 for SMTP)",
 						},
 						"path": {
-							Type:     schema.TypeString,
-							Optional: true,
-							Computed: true,
+							Type:        schema.TypeString,
+							Optional:    true,
+							Computed:    true,
+							Description: "For HTTP(S) probes, a specific path to request. Designate a path other than the root to be monitored. Paths should be supplied as a relative path to the root ‘/’ directory of the website.",
 						},
 						"host": {
-							Type:     schema.TypeString,
-							Optional: true,
-							Computed: true,
+							Type:        schema.TypeString,
+							Optional:    true,
+							Computed:    true,
+							Description: "For HTTP(S) probes, a value to pass in to the Host: header.",
 						},
 						"header": {
 							Type:     schema.TypeString,
 							Optional: true,
 							Computed: true,
+							Description: `For HTTP(S) probes, additional header fields/values to pass in, separated by the newline character (\n).
+See (Configuring Monitor Headers)[https://help.dyn.com/configuring-monitor-headers/] for more information on using custom headers and macros in your endpoint monitoring.`,
 						},
 						"expected": {
-							Type:     schema.TypeString,
-							Optional: true,
-							Computed: true,
+							Type:        schema.TypeString,
+							Optional:    true,
+							Computed:    true,
+							Description: `Designate the data expected in the protocol response while monitoring the host in the pool. Maximum length: 255 bytes. Exceeding the maximum size will result in an ‘Invalid_Data’ error at run time with the message ‘Too long’. Field is case-sensitive. Exact string match required to return ‘up’ status. For HTTP(S) probes, a case sensitive sub-string to search for in the response. For SMTP probes, a string to compare the banner against. Not used for PING, or TCP protocols.`,
 						},
 					},
 				},

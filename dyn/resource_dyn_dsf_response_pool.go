@@ -17,18 +17,25 @@ func resourceDynDSFResponsePool() *schema.Resource {
 
 		Schema: map[string]*schema.Schema{
 			"label": {
-				Type:     schema.TypeString,
-				Required: true,
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "Response pool name",
 			},
 			"automation": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				Computed:     true,
 				ValidateFunc: validation.StringInSlice([]string{"auto", "auto_down", "manual"}, false),
+				Description:  ` Defines how eligible can be changed in response to monitoring.
+  * auto — Sets the serve_mode field to ‘Monitor & Obey’. Default.
+  * auto_down — Sets the serve_mode field to ‘Monitor & Remove’.
+  * manual — Couples with eligible value to determine other serve_mode field values`,
 			},
 			"traffic_director_id": {
-				Type:     schema.TypeString,
-				Required: true,
+				Type:        schema.TypeString,
+				Required:    true,
+				ForceNew:    true,
+				Description: "Traffic director id to attach this response pool",
 			},
 		},
 	}

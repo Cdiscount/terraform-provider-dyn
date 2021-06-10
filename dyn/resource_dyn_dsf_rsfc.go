@@ -14,18 +14,24 @@ func resourceDynDSFRsfc() *schema.Resource {
 		Update: resourceDynDSFRsfcUpdate,
 		Delete: resourceDynDSFRsfcDelete,
 
+		Description: "Dynect RecordSet Failover Chain",
 		Schema: map[string]*schema.Schema{
 			"label": {
-				Type:     schema.TypeString,
-				Required: true,
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "A label for the Record Set Failover Chain",
 			},
 			"traffic_director_id": {
-				Type:     schema.TypeString,
-				Required: true,
+				Type:        schema.TypeString,
+				Required:    true,
+				ForceNew:    true,
+				Description: "The traffic director in which we create the ressource",
 			},
 			"response_pool_id": {
-				Type:     schema.TypeString,
-				Required: true,
+				Type:        schema.TypeString,
+				Required:    true,
+				ForceNew:    true,
+				Description: "The response pool id in which we create the ressource",
 			},
 		},
 	}

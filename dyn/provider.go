@@ -6,6 +6,7 @@ import (
 
 // Provider returns a terraform.ResourceProvider.
 func Provider() *schema.Provider {
+	schema.DescriptionKind = schema.StringMarkdown
 	return &schema.Provider{
 		Schema: map[string]*schema.Schema{
 			"customer_name": {
