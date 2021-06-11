@@ -22,8 +22,7 @@ func resourceDynDSFResponsePool() *schema.Resource {
 			},
 			"automation": {
 				Type:         schema.TypeString,
-				Optional:     true,
-				Computed:     true,
+				Required:     true,
 				ValidateFunc: validation.StringInSlice([]string{"auto", "auto_down", "manual"}, false),
 			},
 			"traffic_director_id": {
