@@ -105,7 +105,7 @@ Valid values:
 							Optional: true,
 							Computed: true,
 							Description: `For HTTP(S) probes, additional header fields/values to pass in, separated by the newline character (\n).
-See (Configuring Monitor Headers)[https://help.dyn.com/configuring-monitor-headers/] for more information on using custom headers and macros in your endpoint monitoring.`,
+See [Configuring Monitor Headers](https://help.dyn.com/configuring-monitor-headers/) for more information on using custom headers and macros in your endpoint monitoring.`,
 						},
 						"expected": {
 							Type:        schema.TypeString,
