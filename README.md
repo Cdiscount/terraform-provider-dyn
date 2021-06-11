@@ -39,3 +39,7 @@ $ make testacc
 ```
 
 In order to install the provider locally, run `make install`.
+
+
+Terraform resources are in `dyn/`.
+Originally the provider uses `go-dynect` package, but it misses some features for our needs. As this is an old project, we just embbeded it in this repository, but it may be moved in it's own repository again in the future.
