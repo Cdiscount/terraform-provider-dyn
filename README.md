@@ -43,3 +43,11 @@ In order to install the provider locally, run `make install`.
 
 Terraform resources are in `dyn/`.
 Originally the provider uses `go-dynect` package, but it misses some features for our needs. As this is an old project, we just embbeded it in this repository, but it may be moved in it's own repository again in the future.
+
+### About test coverage
+
+This fork do not add tests, every resource has been tested manually.
+
+To our knowledge, there is not dynect sandbox API to make good integration tests. We only kept original acceptance tests.
+
+A good improvement could be to add a mock HTTP server to add tests to this provider.
