@@ -39,6 +39,7 @@ $ make testacc
 ```
 
 In order to install the provider locally, run `make install`.
+Terraform documentation can be generated using `make docs`.
 
 
 Terraform resources are in `dyn/`.
