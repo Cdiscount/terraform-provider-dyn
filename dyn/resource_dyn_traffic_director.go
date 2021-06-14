@@ -16,13 +16,15 @@ func resourceDynTrafficDirector() *schema.Resource {
 
 		Schema: map[string]*schema.Schema{
 			"label": {
-				Type:     schema.TypeString,
-				Required: true,
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "Name of the Traffic Director service",
 			},
 			"ttl": {
-				Type:     schema.TypeInt,
-				Optional: true,
-				Computed: true,
+				Type:        schema.TypeInt,
+				Optional:    true,
+				Computed:    true,
+				Description: "The default TTL to be used across the service",
 			},
 			"node": {
 				Type:     schema.TypeList,
@@ -30,12 +32,14 @@ func resourceDynTrafficDirector() *schema.Resource {
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"zone": {
-							Type:     schema.TypeString,
-							Required: true,
+							Type:        schema.TypeString,
+							Required:    true,
+							Description: "Name of the zone",
 						},
 						"fqdn": {
-							Type:     schema.TypeString,
-							Required: true,
+							Type:        schema.TypeString,
+							Required:    true,
+							Description: "Fully qualified domain name of a node in the zone",
 						},
 					},
 				},

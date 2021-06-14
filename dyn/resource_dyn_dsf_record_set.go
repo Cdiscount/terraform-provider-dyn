@@ -15,65 +15,83 @@ func resourceDynDSFRecordSet() *schema.Resource {
 		Update: resourceDynDSFRecordSetUpdate,
 		Delete: resourceDynDSFRecordSetDelete,
 
+		Description: "Dynect traffic director record set",
 		Schema: map[string]*schema.Schema{
 			"label": {
-				Type:     schema.TypeString,
-				Required: true,
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "Record set name",
 			},
 			"traffic_director_id": {
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
+				Type:        schema.TypeString,
+				Required:    true,
+				ForceNew:    true,
+				Description: "The traffic director in which the record set is created",
 			},
 			"response_pool_id": {
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
+				Type:        schema.TypeString,
+				Required:    true,
+				ForceNew:    true,
+				Description: "The response pool in which the record set is created",
 			},
 			"dsf_rsfc_id": {
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
+				Type:        schema.TypeString,
+				Required:    true,
+				ForceNew:    true,
+				Description: "Identifier for the Response Pool whose Record Set Failover Chain will include this Record Set",
 			},
 			"rdata_class": {
 				Type:         schema.TypeString,
 				Required:     true,
 				ValidateFunc: validation.StringInSlice([]string{"A", "AAAA"}, false),
+				Description:  "The type of rdata represented by this Record Set",
 			},
 			"ttl": {
-				Type:     schema.TypeInt,
-				Optional: true,
-				Computed: true,
+				Type:        schema.TypeInt,
+				Optional:    true,
+				Computed:    true,
+				Description: "Default TTL used for Records within this Record Set",
 			},
 			"automation": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				Computed:     true,
 				ValidateFunc: validation.StringInSlice([]string{"auto", "auto_down", "manual"}, false),
+				Description: `Defines how eligible can be changed in response to monitoring
+  * auto — Sets the serve_mode field to ‘Monitor & Obey’. Default
+  * auto_down — Sets the serve_mode field to ‘Monitor & Remove’
+  * manual — Couples with eligible value to determine other serve_mode field values`,
 			},
 			"serve_count": {
-				Type:     schema.TypeInt,
-				Optional: true,
-				Computed: true,
+				Type:        schema.TypeInt,
+				Optional:    true,
+				Computed:    true,
+				Description: "How many Records to serve out of this Record Set",
 			},
 			"fail_count": {
-				Type:     schema.TypeInt,
-				Optional: true,
-				Computed: true,
+				Type:        schema.TypeInt,
+				Optional:    true,
+				Computed:    true,
+				Description: "The number of Records that must not be okay before the Record Set becomes ineligible",
 			},
 			"trouble_count": {
-				Type:     schema.TypeInt,
-				Optional: true,
-				Computed: true,
+				Type:        schema.TypeInt,
+				Optional:    true,
+				Computed:    true,
+				Description: "The number of Records that must not be okay before the Record Set becomes in trouble",
 			},
 			"eligible": {
 				Type:     schema.TypeBool,
 				Optional: true,
 				Default:  true,
+				Description: `Indicates whether or not the Record Set can be served
+  * false — When automation is set to manual, sets the serve_mode field to ‘Do Not Serve’
+  * true — Default. When automation is set to manual, Record Set can be served`,
 			},
 			"monitor_id": {
-				Type:     schema.TypeString,
-				Optional: true,
+				Type:        schema.TypeString,
+				Optional:    true,
+				Description: "The id of the monitoring object",
 			},
 		},
 	}

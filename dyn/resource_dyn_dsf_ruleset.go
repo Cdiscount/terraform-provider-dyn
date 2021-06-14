@@ -16,18 +16,23 @@ func resourceDynDSFRuleset() *schema.Resource {
 
 		Schema: map[string]*schema.Schema{
 			"label": {
-				Type:     schema.TypeString,
-				Required: true,
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "A label for the Ruleset",
 			},
 			"traffic_director_id": {
-				Type:     schema.TypeString,
-				Required: true,
+				Type:        schema.TypeString,
+				Required:    true,
+				ForceNew:    true,
+				Description: "The traffic director ID in which to create the rule set",
 			},
 			"response_pool_ids": {
-				Type:     schema.TypeList,
-				Optional: true,
+				Type:        schema.TypeList,
+				Optional:    true,
+				Description: "Response pools to attach to this ruleset",
 				Elem: &schema.Schema{
-					Type: schema.TypeString,
+					Type:        schema.TypeString,
+					Description: "ID of a response pool",
 				},
 			},
 		},
