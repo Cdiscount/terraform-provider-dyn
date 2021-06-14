@@ -3,7 +3,7 @@ Terraform Provider
 
 A Terraform provider for Dynect forked from [official archived terraform provider](https://github.com/hashicorp/terraform-provider-dyn).
 
-It support Dynect record creation, like the original project, and it add support for traffic director creation.
+It supports Dynect record creation, like the original project, and it adds support for traffic director creation.
 
 Requirements
 ------------
@@ -41,13 +41,13 @@ $ make testacc
 In order to install the provider locally, run `make install`.
 Terraform documentation can be generated using `make docs`.
 
-
 Terraform resources are in `dyn/`.
+
 Originally the provider uses `go-dynect` package, but it misses some features for our needs. As this is an old project, we just embbeded it in this repository, but it may be moved in it's own repository again in the future.
 
 ### About test coverage
 
-This fork do not add tests, every resource has been tested manually.
+This fork does not add tests, every resource has been tested manually.
 
 To our knowledge, there is not dynect sandbox API to make good integration tests. We only kept original acceptance tests.
 
