@@ -1,4 +1,11 @@
-## 1.3.0 (Unreleased)
+## 1.3.0 (June 14, 2021)
+
+IMPROVEMENTS:
+
+* Introduce resources for Dynect Traffic Director
+* Upgrade SDK to terraform-plugin-sdk v2
+* Use new documentation format
+
 ## 1.2.0 (July 12, 2019)
 
 IMPROVEMENTS:
