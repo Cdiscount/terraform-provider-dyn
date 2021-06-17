@@ -26,5 +26,8 @@ provider "dyn" {
 ### Required
 
 - **customer_name** (String) A Dyn customer name.
-- **password** (String) The Dyn password.
 - **username** (String) A Dyn username.
+
+### Optional
+
+- **password** (String) The Dyn password.

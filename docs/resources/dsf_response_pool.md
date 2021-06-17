@@ -25,7 +25,7 @@ resource "dyn_traffic_director" "example" {
 resource "dyn_dsf_response_pool" "response_pool" {
   label               = "my-response-pool"
   traffic_director_id = dyn_traffic_director.example.id
-  # automation        = "auto"
+  automation          = "auto"
 }
 ```
 
@@ -34,15 +34,15 @@ resource "dyn_dsf_response_pool" "response_pool" {
 
 ### Required
 
+- **automation** (String) Defines how eligible can be changed in response to monitoring.
+  * auto — Sets the serve_mode field to ‘Monitor & Obey’. Default.
+  * auto_down — Sets the serve_mode field to ‘Monitor & Remove’.
+  * manual — Couples with eligible value to determine other serve_mode field values
 - **label** (String) Response pool name
 - **traffic_director_id** (String) Traffic director id to attach this response pool
 
 ### Optional
 
-- **automation** (String) Defines how eligible can be changed in response to monitoring.
-  * auto — Sets the serve_mode field to ‘Monitor & Obey’. Default.
-  * auto_down — Sets the serve_mode field to ‘Monitor & Remove’.
-  * manual — Couples with eligible value to determine other serve_mode field values
 - **id** (String) The ID of this resource.
 
 
