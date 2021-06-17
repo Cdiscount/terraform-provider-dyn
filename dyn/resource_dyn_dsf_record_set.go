@@ -1,8 +1,10 @@
 package dyn
 
 import (
+	"context"
 	"fmt"
 
+	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 	"gitlab.cshield.io/cshield.tech/infra/terraform-provider-dyn/api"
@@ -10,10 +12,10 @@ import (
 
 func resourceDynDSFRecordSet() *schema.Resource {
 	return &schema.Resource{
-		Create: resourceDynDSFRecordSetCreate,
-		Read:   resourceDynDSFRecordSetRead,
-		Update: resourceDynDSFRecordSetUpdate,
-		Delete: resourceDynDSFRecordSetDelete,
+		CreateContext: resourceDynDSFRecordSetCreate,
+		ReadContext:   resourceDynDSFRecordSetRead,
+		UpdateContext: resourceDynDSFRecordSetUpdate,
+		DeleteContext: resourceDynDSFRecordSetDelete,
 
 		Description: "Dynect traffic director record set",
 		Schema: map[string]*schema.Schema{
@@ -87,6 +89,10 @@ func resourceDynDSFRecordSet() *schema.Resource {
 				Description: `Indicates whether or not the Record Set can be served
   * false — When automation is set to manual, sets the serve_mode field to ‘Do Not Serve’
   * true — Default. When automation is set to manual, Record Set can be served`,
+				DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool {
+					automation := d.Get("automation").(string)
+					return automation != "manual" || old == new
+				},
 			},
 			"monitor_id": {
 				Type:        schema.TypeString,
@@ -97,7 +103,7 @@ func resourceDynDSFRecordSet() *schema.Resource {
 	}
 }
 
-func resourceDynDSFRecordSetCreate(d *schema.ResourceData, meta interface{}) error {
+func resourceDynDSFRecordSetCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	request := computeDSFRecordSetRequest(d, true)
 	traffic_director_id := d.Get("traffic_director_id").(string)
 	response := &api.DSFRecordSetResponse{}
@@ -106,7 +112,7 @@ func resourceDynDSFRecordSetCreate(d *schema.ResourceData, meta interface{}) err
 	url := fmt.Sprintf("DSFRecordSet/%s", traffic_director_id)
 	err := client.Do("POST", url, request, response)
 	if err != nil {
-		return err
+		return diag.FromErr(err)
 	}
 
 	d.SetId(response.Data.ID)
@@ -115,7 +121,7 @@ func resourceDynDSFRecordSetCreate(d *schema.ResourceData, meta interface{}) err
 	return nil
 }
 
-func resourceDynDSFRecordSetRead(d *schema.ResourceData, meta interface{}) error {
+func resourceDynDSFRecordSetRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	traffic_director_id := d.Get("traffic_director_id").(string)
 	id := d.Id()
 	client := meta.(*api.ConvenientClient)
@@ -124,7 +130,7 @@ func resourceDynDSFRecordSetRead(d *schema.ResourceData, meta interface{}) error
 	url := fmt.Sprintf("DSFRecordSet/%s/%s", traffic_director_id, id)
 	err := client.Do("GET", url, nil, response)
 	if err != nil {
-		return err
+		return diag.FromErr(err)
 	}
 
 	load_dsf_record_set(d, &response.Data)
@@ -132,7 +138,7 @@ func resourceDynDSFRecordSetRead(d *schema.ResourceData, meta interface{}) error
 	return nil
 }
 
-func resourceDynDSFRecordSetUpdate(d *schema.ResourceData, meta interface{}) error {
+func resourceDynDSFRecordSetUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	traffic_director_id := d.Get("traffic_director_id").(string)
 	id := d.Id()
 	client := meta.(*api.ConvenientClient)
@@ -142,7 +148,7 @@ func resourceDynDSFRecordSetUpdate(d *schema.ResourceData, meta interface{}) err
 	url := fmt.Sprintf("DSFRecordSet/%s/%s", traffic_director_id, id)
 	err := client.Do("PUT", url, request, response)
 	if err != nil {
-		return err
+		return diag.FromErr(err)
 	}
 
 	load_dsf_record_set(d, &response.Data)
@@ -150,7 +156,7 @@ func resourceDynDSFRecordSetUpdate(d *schema.ResourceData, meta interface{}) err
 	return nil
 }
 
-func resourceDynDSFRecordSetDelete(d *schema.ResourceData, meta interface{}) error {
+func resourceDynDSFRecordSetDelete(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	id := d.Id()
 	client := meta.(*api.ConvenientClient)
 
@@ -161,7 +167,7 @@ func resourceDynDSFRecordSetDelete(d *schema.ResourceData, meta interface{}) err
 	url := fmt.Sprintf("DSFRecordSet/%s/%s", traffic_director_id, id)
 	err := client.Do("DELETE", url, publish, nil)
 	if err != nil {
-		return err
+		return diag.FromErr(err)
 	}
 
 	return nil
@@ -179,9 +185,13 @@ func computeDSFRecordSetRequest(d *schema.ResourceData, isCreate bool) *api.DSFR
 		ServeCount:   api.SInt(d.Get("serve_count").(int)),
 		FailCount:    api.SInt(d.Get("fail_count").(int)),
 		TroubleCount: api.SInt(d.Get("trouble_count").(int)),
-		Eligible:     api.SBool(d.Get("eligible").(bool)),
+		Eligible:     nil,
 		MonitorID:    d.Get("monitor_id").(string),
 		DSFRsfc:      d.Get("dsf_rsfc_id").(string),
+	}
+	if request.Automation == "manual" {
+		eligible := api.SBool(d.Get("eligible").(bool))
+		request.Eligible = &eligible
 	}
 	if isCreate {
 		request.ResponsePoolId = d.Get("response_pool_id").(string)

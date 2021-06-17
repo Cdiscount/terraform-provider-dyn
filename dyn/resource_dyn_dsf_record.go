@@ -40,14 +40,14 @@ func resourceDynDsfRecord() *schema.Resource {
 				Optional:     true,
 				Default:      1,
 				ValidateFunc: validation.IntBetween(1, 255),
-				Description:  `Weight for the Record. Defaults to 1.
+				Description: `Weight for the Record. Defaults to 1.
   * Valid values for A or AAAA records: 1 – 15.
   * Valid values for CNAME records: 1 – 255.`,
 			},
 			"automation": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				Computed:     true,
+				Default:      true,
 				ValidateFunc: validation.StringInSlice([]string{"auto", "auto_down", "manual"}, false),
 				Description: `Defines how eligible can be changed in response to monitoring.
   * auto — Sets the serve_mode field to ‘Monitor & Obey’. Default.
@@ -61,6 +61,10 @@ func resourceDynDsfRecord() *schema.Resource {
 				Description: `Indicates whether or not the Record can be served.
   * false — When automation is set to manual, sets the serve_mode field to ‘Do Not Serve’.
   * true — Default. When automation is set to manual, sets the serve_mode field to ‘Always Serve’.`,
+				DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool {
+					automation := d.Get("automation").(string)
+					return automation != "manual" || old == new
+				},
 			},
 			"master_line": {
 				Type:        schema.TypeString,
@@ -154,7 +158,11 @@ func computeRequest(d *schema.ResourceData) *api.DSFRecordRequest {
 		Weight:     d.Get("weight").(int),
 		Automation: d.Get("automation").(string),
 		MasterLine: d.Get("master_line").(string),
-		Eligible:   api.SBool(d.Get("eligible").(bool)),
+		Eligible:   nil,
+	}
+	if request.Automation == "manual" {
+		eligible := api.SBool(d.Get("eligible").(bool))
+		request.Eligible = &eligible
 	}
 	return request
 }
