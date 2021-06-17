@@ -32,7 +32,7 @@ resource "dyn_dsf_record_set" "record_set" {
   serve_count = 1
 }
 
-resource "dyn_dsf_record" {
+resource "dyn_dsf_record" "my-record" {
   traffic_director_id = dyn_traffic_director.example.id
   record_set_id       = dyn_dsf_record_set.record_set.id
 
