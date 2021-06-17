@@ -71,7 +71,7 @@ Optional:
 
 - **expected** (String) Designate the data expected in the protocol response while monitoring the host in the pool. Maximum length: 255 bytes. Exceeding the maximum size will result in an ‘Invalid_Data’ error at run time with the message ‘Too long’. Field is case-sensitive. Exact string match required to return ‘up’ status. For HTTP(S) probes, a case sensitive sub-string to search for in the response. For SMTP probes, a string to compare the banner against. Not used for PING, or TCP protocols.
 - **header** (String) For HTTP(S) probes, additional header fields/values to pass in, separated by the newline character (\n).
-See (Configuring Monitor Headers)[https://help.dyn.com/configuring-monitor-headers/] for more information on using custom headers and macros in your endpoint monitoring.
+See [Configuring Monitor Headers](https://help.dyn.com/configuring-monitor-headers/) for more information on using custom headers and macros in your endpoint monitoring.
 - **host** (String) For HTTP(S) probes, a value to pass in to the Host: header.
 - **path** (String) For HTTP(S) probes, a specific path to request. Designate a path other than the root to be monitored. Paths should be supplied as a relative path to the root ‘/’ directory of the website.
 - **port** (Number) For HTTP(S)/SMTP/TCP probes, an alternate connection port. Leaving the field blank means it will monitor the default port (80 for HTTP and TCP, 443 for HTTPS, and 25 for SMTP)

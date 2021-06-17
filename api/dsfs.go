@@ -172,7 +172,7 @@ type DSFRecordSetRequest struct {
 	ServeCount     SInt   `json:"serve_count,omitempty"`
 	FailCount      SInt   `json:"fail_count,omitempty"`
 	TroubleCount   SInt   `json:"trouble_count,omitempty"`
-	Eligible       SBool  `json:"eligible,omitempty"`
+	Eligible       *SBool `json:"eligible,omitempty"`
 	MonitorID      string `json:"dsf_monitor_id,omitempty"`
 	DSFRsfc        string `json:"dsf_record_set_failover_chain_id"`
 	ResponsePoolId string `json:"dsf_response_pool_id"`
@@ -188,7 +188,7 @@ type DSFRecordRequest struct {
 	Label      string `json:"label"`
 	Weight     int    `json:"weight,omitempty"`
 	Automation string `json:"automation,omitempty"`
-	Eligible   SBool  `json:"eligible"`
+	Eligible   *SBool `json:"eligible,omitempty"`
 	MasterLine string `json:"master_line,omitempty"`
 }
 

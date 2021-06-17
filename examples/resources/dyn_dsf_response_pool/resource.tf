@@ -10,5 +10,5 @@ resource "dyn_traffic_director" "example" {
 resource "dyn_dsf_response_pool" "response_pool" {
   label               = "my-response-pool"
   traffic_director_id = dyn_traffic_director.example.id
-  # automation        = "auto"
+  automation          = "auto"
 }

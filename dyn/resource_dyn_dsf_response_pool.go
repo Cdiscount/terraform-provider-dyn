@@ -25,7 +25,7 @@ func resourceDynDSFResponsePool() *schema.Resource {
 				Type:         schema.TypeString,
 				Required:     true,
 				ValidateFunc: validation.StringInSlice([]string{"auto", "auto_down", "manual"}, false),
-				Description:  `Defines how eligible can be changed in response to monitoring.
+				Description: `Defines how eligible can be changed in response to monitoring.
   * auto — Sets the serve_mode field to ‘Monitor & Obey’. Default.
   * auto_down — Sets the serve_mode field to ‘Monitor & Remove’.
   * manual — Couples with eligible value to determine other serve_mode field values`,
