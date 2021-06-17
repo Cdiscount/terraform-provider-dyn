@@ -1,8 +1,10 @@
 package dyn
 
 import (
+	"context"
 	"fmt"
 
+	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 	"gitlab.cshield.io/cshield.tech/infra/terraform-provider-dyn/api"
@@ -10,10 +12,10 @@ import (
 
 func resourceDynDsfRecord() *schema.Resource {
 	return &schema.Resource{
-		Create: resourceDynDsfRecordCreate,
-		Read:   resourceDynDsfRecordRead,
-		Update: resourceDynDsfRecordUpdate,
-		Delete: resourceDynDsfRecordDelete,
+		CreateContext: resourceDynDsfRecordCreate,
+		ReadContext:   resourceDynDsfRecordRead,
+		UpdateContext: resourceDynDsfRecordUpdate,
+		DeleteContext: resourceDynDsfRecordDelete,
 
 		Schema: map[string]*schema.Schema{
 			"record_set_id": {
@@ -69,7 +71,7 @@ func resourceDynDsfRecord() *schema.Resource {
 	}
 }
 
-func resourceDynDsfRecordCreate(d *schema.ResourceData, meta interface{}) error {
+func resourceDynDsfRecordCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	request := computeRequest(d)
 
 	traffic_director_id := d.Get("traffic_director_id").(string)
@@ -80,7 +82,7 @@ func resourceDynDsfRecordCreate(d *schema.ResourceData, meta interface{}) error 
 	client := meta.(*api.ConvenientClient)
 	err := client.Do("POST", url, request, response)
 	if err != nil {
-		return err
+		return diag.FromErr(err)
 	}
 
 	d.SetId(response.Data.ID)
@@ -89,7 +91,7 @@ func resourceDynDsfRecordCreate(d *schema.ResourceData, meta interface{}) error 
 	return nil
 }
 
-func resourceDynDsfRecordRead(d *schema.ResourceData, meta interface{}) error {
+func resourceDynDsfRecordRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	client := meta.(*api.ConvenientClient)
 	response := &api.DSFRecordResponse{}
 
@@ -99,7 +101,7 @@ func resourceDynDsfRecordRead(d *schema.ResourceData, meta interface{}) error {
 
 	err := client.Do("GET", url, nil, response)
 	if err != nil {
-		return err
+		return diag.FromErr(err)
 	}
 
 	load_dsf_record(d, &response.Data)
@@ -107,7 +109,7 @@ func resourceDynDsfRecordRead(d *schema.ResourceData, meta interface{}) error {
 	return nil
 }
 
-func resourceDynDsfRecordUpdate(d *schema.ResourceData, meta interface{}) error {
+func resourceDynDsfRecordUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	client := meta.(*api.ConvenientClient)
 	request := computeRequest(d)
 	response := &api.DSFRecordResponse{}
@@ -118,7 +120,7 @@ func resourceDynDsfRecordUpdate(d *schema.ResourceData, meta interface{}) error 
 
 	err := client.Do("PUT", url, request, response)
 	if err != nil {
-		return err
+		return diag.FromErr(err)
 	}
 
 	load_dsf_record(d, &response.Data)
@@ -126,7 +128,7 @@ func resourceDynDsfRecordUpdate(d *schema.ResourceData, meta interface{}) error 
 	return nil
 }
 
-func resourceDynDsfRecordDelete(d *schema.ResourceData, meta interface{}) error {
+func resourceDynDsfRecordDelete(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	traffic_director_id := d.Get("traffic_director_id").(string)
 	id := d.Id()
 	client := meta.(*api.ConvenientClient)
@@ -137,7 +139,7 @@ func resourceDynDsfRecordDelete(d *schema.ResourceData, meta interface{}) error 
 	url := fmt.Sprintf("DSFRecord/%s/%s", traffic_director_id, id)
 	err := client.Do("DELETE", url, &request, nil)
 	if err != nil {
-		return err
+		return diag.FromErr(err)
 	}
 
 	return nil
