@@ -65,7 +65,7 @@ Valid values:
 			"active": {
 				Type:        schema.TypeBool,
 				Optional:    true,
-				Default:     false,
+				Default:     true,
 				Description: "Indicates if the Monitor is active",
 			},
 			"options": {
