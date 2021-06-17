@@ -123,9 +123,14 @@ See [Configuring Monitor Headers](https://help.dyn.com/configuring-monitor-heade
 func resourceDynDSFMonitorCreate(d *schema.ResourceData, meta interface{}) error {
 	request := createRequest(d)
 	response := &api.DSFMonitorResponse{}
-	client := meta.(*api.ConvenientClient)
+	provider := GetProvider(meta)
+	client, err := provider.GetClient()
+	if err != nil {
+		return err
+	}
+	defer provider.PutClient(client)
 
-	err := client.Do("POST", "DSFMonitor", request, response)
+	err = client.Do("POST", "DSFMonitor", request, response)
 	if err != nil {
 		return err
 	}
@@ -138,11 +143,16 @@ func resourceDynDSFMonitorCreate(d *schema.ResourceData, meta interface{}) error
 
 func resourceDynDSFMonitorRead(d *schema.ResourceData, meta interface{}) error {
 	id := d.Id()
-	client := meta.(*api.ConvenientClient)
+	provider := GetProvider(meta)
+	client, err := provider.GetClient()
+	if err != nil {
+		return err
+	}
+	defer provider.PutClient(client)
 	response := &api.DSFMonitorResponse{}
 
 	url := fmt.Sprintf("DSFMonitor/%s", id)
-	err := client.Do("GET", url, nil, response)
+	err = client.Do("GET", url, nil, response)
 	if err != nil {
 		return err
 	}
@@ -154,12 +164,17 @@ func resourceDynDSFMonitorRead(d *schema.ResourceData, meta interface{}) error {
 
 func resourceDynDSFMonitorUpdate(d *schema.ResourceData, meta interface{}) error {
 	id := d.Id()
-	client := meta.(*api.ConvenientClient)
+	provider := GetProvider(meta)
+	client, err := provider.GetClient()
+	if err != nil {
+		return err
+	}
+	defer provider.PutClient(client)
 	request := createRequest(d)
 	response := &api.DSFMonitorResponse{}
 
 	url := fmt.Sprintf("DSFMonitor/%s", id)
-	err := client.Do("PUT", url, request, response)
+	err = client.Do("PUT", url, request, response)
 	if err != nil {
 		return err
 	}
@@ -171,10 +186,15 @@ func resourceDynDSFMonitorUpdate(d *schema.ResourceData, meta interface{}) error
 
 func resourceDynDSFMonitorDelete(d *schema.ResourceData, meta interface{}) error {
 	id := d.Id()
-	client := meta.(*api.ConvenientClient)
+	provider := GetProvider(meta)
+	client, err := provider.GetClient()
+	if err != nil {
+		return err
+	}
+	defer provider.PutClient(client)
 
 	url := fmt.Sprintf("DSFMonitor/%s", id)
-	err := client.Do("DELETE", url, nil, nil)
+	err = client.Do("DELETE", url, nil, nil)
 	if err != nil {
 		return err
 	}

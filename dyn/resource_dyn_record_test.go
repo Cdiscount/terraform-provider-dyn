@@ -236,7 +236,12 @@ func TestAccDynRecord_MX_record(t *testing.T) {
 }
 
 func testAccCheckDynRecordDestroy(s *terraform.State) error {
-	client := testAccProvider.Meta().(*api.ConvenientClient)
+	provider := GetProvider(testAccProvider.Meta())
+	client, err := provider.GetClient()
+	if err != nil {
+		return err
+	}
+	defer provider.PutClient(client)
 
 	for _, rs := range s.RootModule().Resources {
 		if rs.Type != "dyn_record" {
@@ -294,7 +299,12 @@ func testAccCheckDynRecordExists(n string, record *api.Record) resource.TestChec
 			return fmt.Errorf("No Record ID is set")
 		}
 
-		client := testAccProvider.Meta().(*api.ConvenientClient)
+		provider := GetProvider(testAccProvider.Meta())
+		client, err := provider.GetClient()
+		if err != nil {
+			return err
+		}
+		defer provider.PutClient(client)
 
 		foundRecord := &api.Record{
 			Zone: rs.Primary.Attributes["zone"],
@@ -303,7 +313,7 @@ func testAccCheckDynRecordExists(n string, record *api.Record) resource.TestChec
 			Type: rs.Primary.Attributes["type"],
 		}
 
-		err := client.GetRecord(foundRecord)
+		err = client.GetRecord(foundRecord)
 
 		if err != nil {
 			return err

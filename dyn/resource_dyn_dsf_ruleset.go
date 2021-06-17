@@ -50,10 +50,16 @@ func resourceDynDSFRulesetCreate(d *schema.ResourceData, meta interface{}) error
 	}
 	traffic_director_id := d.Get("traffic_director_id").(string)
 	response := &api.DSFRulesetResponse{}
-	client := meta.(*api.ConvenientClient)
+
+	provider := GetProvider(meta)
+	client, err := provider.GetClient()
+	if err != nil {
+		return err
+	}
+	defer provider.PutClient(client)
 
 	url := fmt.Sprintf("DSFRuleset/%s", traffic_director_id)
-	err := client.Do("POST", url, request, response)
+	err = client.Do("POST", url, request, response)
 	if err != nil {
 		return err
 	}
@@ -79,11 +85,18 @@ func computRuleSetResponsePool(d *schema.ResourceData) *[]api.DSFResponsePoolRef
 func resourceDynDSFRulesetRead(d *schema.ResourceData, meta interface{}) error {
 	traffic_director_id := d.Get("traffic_director_id").(string)
 	id := d.Id()
-	client := meta.(*api.ConvenientClient)
+
+	provider := GetProvider(meta)
+	client, err := provider.GetClient()
+	if err != nil {
+		return err
+	}
+	defer provider.PutClient(client)
+
 	response := &api.DSFRulesetResponse{}
 
 	url := fmt.Sprintf("DSFRuleset/%s/%s", traffic_director_id, id)
-	err := client.Do("GET", url, nil, response)
+	err = client.Do("GET", url, nil, response)
 	if err != nil {
 		return err
 	}
@@ -96,7 +109,14 @@ func resourceDynDSFRulesetRead(d *schema.ResourceData, meta interface{}) error {
 func resourceDynDSFRulesetUpdate(d *schema.ResourceData, meta interface{}) error {
 	traffic_director_id := d.Get("traffic_director_id").(string)
 	id := d.Id()
-	client := meta.(*api.ConvenientClient)
+
+	provider := GetProvider(meta)
+	client, err := provider.GetClient()
+	if err != nil {
+		return err
+	}
+	defer provider.PutClient(client)
+
 	request := &api.DSFRulesetRequest{
 		PublishBlock: api.PublishBlock{
 			Publish: true,
@@ -108,7 +128,7 @@ func resourceDynDSFRulesetUpdate(d *schema.ResourceData, meta interface{}) error
 	response := &api.DSFRulesetResponse{}
 
 	url := fmt.Sprintf("DSFRuleset/%s/%s", traffic_director_id, id)
-	err := client.Do("PUT", url, request, response)
+	err = client.Do("PUT", url, request, response)
 	if err != nil {
 		return err
 	}
@@ -120,14 +140,19 @@ func resourceDynDSFRulesetUpdate(d *schema.ResourceData, meta interface{}) error
 
 func resourceDynDSFRulesetDelete(d *schema.ResourceData, meta interface{}) error {
 	id := d.Id()
-	client := meta.(*api.ConvenientClient)
+	provider := GetProvider(meta)
+	client, err := provider.GetClient()
+	if err != nil {
+		return err
+	}
+	defer provider.PutClient(client)
 
 	traffic_director_id := d.Get("traffic_director_id").(string)
 	publish := api.PublishBlock{
 		Publish: true,
 	}
 	url := fmt.Sprintf("DSFRuleset/%s/%s", traffic_director_id, id)
-	err := client.Do("DELETE", url, publish, nil)
+	err = client.Do("DELETE", url, publish, nil)
 	if err != nil {
 		return err
 	}

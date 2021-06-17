@@ -57,9 +57,15 @@ func resourceDynTrafficDirectorCreate(d *schema.ResourceData, meta interface{}) 
 		TTL:   api.SInt(d.Get("ttl").(int)),
 	}
 	response := &api.DSFResponse{}
-	client := meta.(*api.ConvenientClient)
 
-	err := client.Do("POST", "DSF", request, response)
+	provider := GetProvider(meta)
+	client, err := provider.GetClient()
+	if err != nil {
+		return err
+	}
+	defer provider.PutClient(client)
+
+	err = client.Do("POST", "DSF", request, response)
 	if err != nil {
 		return err
 	}
@@ -72,11 +78,18 @@ func resourceDynTrafficDirectorCreate(d *schema.ResourceData, meta interface{}) 
 
 func resourceDynTrafficDirectorRead(d *schema.ResourceData, meta interface{}) error {
 	id := d.Id()
-	client := meta.(*api.ConvenientClient)
+
+	provider := GetProvider(meta)
+	client, err := provider.GetClient()
+	if err != nil {
+		return err
+	}
+	defer provider.PutClient(client)
+
 	response := &api.DSFResponse{}
 
 	url := fmt.Sprintf("DSF/%s", id)
-	err := client.Do("GET", url, nil, response)
+	err = client.Do("GET", url, nil, response)
 	if err != nil {
 		return err
 	}
@@ -88,7 +101,13 @@ func resourceDynTrafficDirectorRead(d *schema.ResourceData, meta interface{}) er
 }
 
 func resourceDynTrafficDirectorUpdate(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*api.ConvenientClient)
+	provider := GetProvider(meta)
+	client, err := provider.GetClient()
+	if err != nil {
+		return err
+	}
+	defer provider.PutClient(client)
+
 	if d.HasChanges("label", "ttl") {
 		id := d.Id()
 		request := &api.DSFServiceRequest{
@@ -112,13 +131,19 @@ func resourceDynTrafficDirectorUpdate(d *schema.ResourceData, meta interface{}) 
 
 func resourceDynTrafficDirectorDelete(d *schema.ResourceData, meta interface{}) error {
 	id := d.Id()
-	client := meta.(*api.ConvenientClient)
+
+	provider := GetProvider(meta)
+	client, err := provider.GetClient()
+	if err != nil {
+		return err
+	}
+	defer provider.PutClient(client)
 
 	publish := api.PublishBlock{
 		Publish: true,
 	}
 	url := fmt.Sprintf("DSF/%s", id)
-	err := client.Do("DELETE", url, &publish, nil)
+	err = client.Do("DELETE", url, &publish, nil)
 	if err != nil {
 		return err
 	}

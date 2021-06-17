@@ -50,10 +50,16 @@ func resourceDynDSFResponsePoolCreate(d *schema.ResourceData, meta interface{}) 
 	}
 	traffic_director_id := d.Get("traffic_director_id").(string)
 	response := &api.DSFResponsePoolResponse{}
-	client := meta.(*api.ConvenientClient)
+
+	provider := GetProvider(meta)
+	client, err := provider.GetClient()
+	if err != nil {
+		return err
+	}
+	defer provider.PutClient(client)
 
 	url := fmt.Sprintf("DSFResponsePool/%s", traffic_director_id)
-	err := client.Do("POST", url, request, response)
+	err = client.Do("POST", url, request, response)
 	if err != nil {
 		return err
 	}
@@ -67,11 +73,18 @@ func resourceDynDSFResponsePoolCreate(d *schema.ResourceData, meta interface{}) 
 func resourceDynDSFResponsePoolRead(d *schema.ResourceData, meta interface{}) error {
 	traffic_director_id := d.Get("traffic_director_id").(string)
 	id := d.Id()
-	client := meta.(*api.ConvenientClient)
+
+	provider := GetProvider(meta)
+	client, err := provider.GetClient()
+	if err != nil {
+		return err
+	}
+	defer provider.PutClient(client)
+
 	response := &api.DSFResponsePoolResponse{}
 
 	url := fmt.Sprintf("DSFResponsePool/%s/%s", traffic_director_id, id)
-	err := client.Do("GET", url, nil, response)
+	err = client.Do("GET", url, nil, response)
 	if err != nil {
 		return err
 	}
@@ -84,7 +97,14 @@ func resourceDynDSFResponsePoolRead(d *schema.ResourceData, meta interface{}) er
 func resourceDynDSFResponsePoolUpdate(d *schema.ResourceData, meta interface{}) error {
 	traffic_director_id := d.Get("traffic_director_id").(string)
 	id := d.Id()
-	client := meta.(*api.ConvenientClient)
+
+	provider := GetProvider(meta)
+	client, err := provider.GetClient()
+	if err != nil {
+		return err
+	}
+	defer provider.PutClient(client)
+
 	request := &api.DSFResponsePoolRequest{
 		PublishBlock: api.PublishBlock{
 			Publish: true,
@@ -95,7 +115,7 @@ func resourceDynDSFResponsePoolUpdate(d *schema.ResourceData, meta interface{}) 
 	response := &api.DSFResponsePoolResponse{}
 
 	url := fmt.Sprintf("DSFResponsePool/%s/%s", traffic_director_id, id)
-	err := client.Do("PUT", url, request, response)
+	err = client.Do("PUT", url, request, response)
 	if err != nil {
 		return err
 	}
@@ -107,14 +127,20 @@ func resourceDynDSFResponsePoolUpdate(d *schema.ResourceData, meta interface{}) 
 
 func resourceDynDSFResponsePoolDelete(d *schema.ResourceData, meta interface{}) error {
 	id := d.Id()
-	client := meta.(*api.ConvenientClient)
+
+	provider := GetProvider(meta)
+	client, err := provider.GetClient()
+	if err != nil {
+		return err
+	}
+	defer provider.PutClient(client)
 
 	traffic_director_id := d.Get("traffic_director_id").(string)
 	publish := api.PublishBlock{
 		Publish: true,
 	}
 	url := fmt.Sprintf("DSFResponsePool/%s/%s", traffic_director_id, id)
-	err := client.Do("DELETE", url, publish, nil)
+	err = client.Do("DELETE", url, publish, nil)
 	if err != nil {
 		return err
 	}
