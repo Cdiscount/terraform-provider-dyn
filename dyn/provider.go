@@ -1,7 +1,10 @@
 package dyn
 
 import (
+	"sync"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"gitlab.cshield.io/cshield.tech/infra/terraform-provider-dyn/api"
 )
 
 // Provider returns a terraform.ResourceProvider.
@@ -46,6 +49,37 @@ func Provider() *schema.Provider {
 	}
 }
 
+type DynProvider struct {
+	config  *Config
+	clients []*api.ConvenientClient
+	mutex   sync.Mutex
+}
+
+// Get a client from the pool, creating a new one if necessary
+func (p *DynProvider) GetClient() (*api.ConvenientClient, error) {
+	p.mutex.Lock()
+	if len(p.clients) > 0 {
+		client := p.clients[len(p.clients)-1]
+		p.clients = p.clients[:len(p.clients)-1]
+		p.mutex.Unlock()
+		return client, nil
+	}
+	p.mutex.Unlock()
+	return p.config.Client()
+}
+
+// Put back a client to the pool.
+// If not done, the client is lost and a new one must be created
+func (p *DynProvider) PutClient(c *api.ConvenientClient) {
+	p.mutex.Lock()
+	defer p.mutex.Unlock()
+	p.clients = append(p.clients, c)
+}
+
+func GetProvider(meta interface{}) *DynProvider {
+	return meta.(*DynProvider)
+}
+
 func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 	config := Config{
 		CustomerName: d.Get("customer_name").(string),
@@ -53,5 +87,15 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 		Password:     d.Get("password").(string),
 	}
 
-	return config.Client()
+	provider := DynProvider{
+		config:  &config,
+		clients: make([]*api.ConvenientClient, 0, 10),
+	}
+	// Create at least one client to validate credentials
+	c, err := provider.GetClient()
+	if err != nil {
+		return nil, err
+	}
+	provider.PutClient(c)
+	return &provider, nil
 }

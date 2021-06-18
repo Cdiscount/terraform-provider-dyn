@@ -12,7 +12,12 @@ import (
 func resourceDynRecordImportState(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	results := make([]*schema.ResourceData, 1, 1)
 
-	client := meta.(*api.ConvenientClient)
+	provider := GetProvider(meta)
+	client, err := provider.GetClient()
+	if err != nil {
+		return nil, err
+	}
+	defer provider.PutClient(client)
 
 	values := strings.Split(d.Id(), "/")
 

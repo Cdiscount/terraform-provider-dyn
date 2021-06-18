@@ -86,7 +86,12 @@ func resourceDynRecord() *schema.Resource {
 func resourceDynRecordCreate(d *schema.ResourceData, meta interface{}) error {
 	mutex.Lock()
 
-	client := meta.(*api.ConvenientClient)
+	provider := GetProvider(meta)
+	client, err := provider.GetClient()
+	if err != nil {
+		return err
+	}
+	defer provider.PutClient(client)
 
 	record := &api.Record{
 		Name:  d.Get("name").(string),
@@ -98,7 +103,7 @@ func resourceDynRecordCreate(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG] Dyn record create configuration: %#v", record)
 
 	// create the record
-	err := client.CreateRecord(record)
+	err = client.CreateRecord(record)
 	if err != nil {
 		mutex.Unlock()
 		return fmt.Errorf("Failed to create Dyn record: %s", err)
@@ -127,7 +132,12 @@ func resourceDynRecordRead(d *schema.ResourceData, meta interface{}) error {
 	mutex.Lock()
 	defer mutex.Unlock()
 
-	client := meta.(*api.ConvenientClient)
+	provider := GetProvider(meta)
+	client, err := provider.GetClient()
+	if err != nil {
+		return err
+	}
+	defer provider.PutClient(client)
 
 	record := &api.Record{
 		ID:   d.Id(),
@@ -138,7 +148,7 @@ func resourceDynRecordRead(d *schema.ResourceData, meta interface{}) error {
 		Type: d.Get("type").(string),
 	}
 
-	err := client.GetRecord(record)
+	err = client.GetRecord(record)
 	if err != nil {
 		return fmt.Errorf("Couldn't find Dyn record: %s", err)
 	}
@@ -156,7 +166,12 @@ func resourceDynRecordRead(d *schema.ResourceData, meta interface{}) error {
 func resourceDynRecordUpdate(d *schema.ResourceData, meta interface{}) error {
 	mutex.Lock()
 
-	client := meta.(*api.ConvenientClient)
+	provider := GetProvider(meta)
+	client, err := provider.GetClient()
+	if err != nil {
+		return err
+	}
+	defer provider.PutClient(client)
 
 	record := &api.Record{
 		ID:    d.Id(),
@@ -169,7 +184,7 @@ func resourceDynRecordUpdate(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG] Dyn record update configuration: %#v", record)
 
 	// update the record
-	err := client.UpdateRecord(record)
+	err = client.UpdateRecord(record)
 	if err != nil {
 		mutex.Unlock()
 		return fmt.Errorf("Failed to update Dyn record: %s", err)
@@ -198,7 +213,12 @@ func resourceDynRecordDelete(d *schema.ResourceData, meta interface{}) error {
 	mutex.Lock()
 	defer mutex.Unlock()
 
-	client := meta.(*api.ConvenientClient)
+	provider := GetProvider(meta)
+	client, err := provider.GetClient()
+	if err != nil {
+		return err
+	}
+	defer provider.PutClient(client)
 
 	record := &api.Record{
 		ID:   d.Id(),
@@ -211,7 +231,7 @@ func resourceDynRecordDelete(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[INFO] Deleting Dyn record: %s, %s", record.FQDN, record.ID)
 
 	// delete the record
-	err := client.DeleteRecord(record)
+	err = client.DeleteRecord(record)
 	if err != nil {
 		return fmt.Errorf("Failed to delete Dyn record: %s", err)
 	}

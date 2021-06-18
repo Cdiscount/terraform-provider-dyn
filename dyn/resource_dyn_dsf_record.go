@@ -83,8 +83,14 @@ func resourceDynDsfRecordCreate(ctx context.Context, d *schema.ResourceData, met
 	url := fmt.Sprintf("DSFRecord/%s/%s", traffic_director_id, record_set_id)
 
 	response := &api.DSFRecordResponse{}
-	client := meta.(*api.ConvenientClient)
-	err := client.Do("POST", url, request, response)
+	provider := GetProvider(meta)
+	client, err := provider.GetClient()
+	if err != nil {
+		return diag.FromErr(err)
+	}
+	defer provider.PutClient(client)
+
+	err = client.Do("POST", url, request, response)
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -96,14 +102,20 @@ func resourceDynDsfRecordCreate(ctx context.Context, d *schema.ResourceData, met
 }
 
 func resourceDynDsfRecordRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
-	client := meta.(*api.ConvenientClient)
+	provider := GetProvider(meta)
+	client, err := provider.GetClient()
+	if err != nil {
+		return diag.FromErr(err)
+	}
+	defer provider.PutClient(client)
+
 	response := &api.DSFRecordResponse{}
 
 	id := d.Id()
 	traffic_director_id := d.Get("traffic_director_id").(string)
 	url := fmt.Sprintf("DSFRecord/%s/%s", traffic_director_id, id)
 
-	err := client.Do("GET", url, nil, response)
+	err = client.Do("GET", url, nil, response)
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -114,7 +126,13 @@ func resourceDynDsfRecordRead(ctx context.Context, d *schema.ResourceData, meta 
 }
 
 func resourceDynDsfRecordUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
-	client := meta.(*api.ConvenientClient)
+	provider := GetProvider(meta)
+	client, err := provider.GetClient()
+	if err != nil {
+		return diag.FromErr(err)
+	}
+	defer provider.PutClient(client)
+
 	request := computeRequest(d)
 	response := &api.DSFRecordResponse{}
 
@@ -122,7 +140,7 @@ func resourceDynDsfRecordUpdate(ctx context.Context, d *schema.ResourceData, met
 	traffic_director_id := d.Get("traffic_director_id").(string)
 	url := fmt.Sprintf("DSFRecord/%s/%s", traffic_director_id, id)
 
-	err := client.Do("PUT", url, request, response)
+	err = client.Do("PUT", url, request, response)
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -135,13 +153,18 @@ func resourceDynDsfRecordUpdate(ctx context.Context, d *schema.ResourceData, met
 func resourceDynDsfRecordDelete(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	traffic_director_id := d.Get("traffic_director_id").(string)
 	id := d.Id()
-	client := meta.(*api.ConvenientClient)
+	provider := GetProvider(meta)
+	client, err := provider.GetClient()
+	if err != nil {
+		return diag.FromErr(err)
+	}
+	defer provider.PutClient(client)
 
 	request := api.PublishBlock{
 		Publish: true,
 	}
 	url := fmt.Sprintf("DSFRecord/%s/%s", traffic_director_id, id)
-	err := client.Do("DELETE", url, &request, nil)
+	err = client.Do("DELETE", url, &request, nil)
 	if err != nil {
 		return diag.FromErr(err)
 	}
