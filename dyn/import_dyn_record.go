@@ -6,7 +6,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
-	"gitlab.cshield.io/cshield.tech/infra/terraform-provider-dyn/api"
+	"github.com/Cdiscount/terraform-provider-dyn/api"
 )
 
 func resourceDynRecordImportState(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {

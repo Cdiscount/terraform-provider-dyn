@@ -3,9 +3,9 @@ package dyn
 import (
 	"fmt"
 
+	"github.com/Cdiscount/terraform-provider-dyn/api"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
-	"gitlab.cshield.io/cshield.tech/infra/terraform-provider-dyn/api"
 )
 
 func resourceDynDSFResponsePool() *schema.Resource {

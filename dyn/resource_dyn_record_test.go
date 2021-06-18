@@ -6,9 +6,9 @@ import (
 	"regexp"
 	"testing"
 
+	"github.com/Cdiscount/terraform-provider-dyn/api"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
-	"gitlab.cshield.io/cshield.tech/infra/terraform-provider-dyn/api"
 )
 
 func TestAccDynRecord_Basic(t *testing.T) {

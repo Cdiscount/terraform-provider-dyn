@@ -6,8 +6,8 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/Cdiscount/terraform-provider-dyn/api"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"gitlab.cshield.io/cshield.tech/infra/terraform-provider-dyn/api"
 )
 
 var mutex = &sync.Mutex{}
