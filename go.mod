@@ -1,4 +1,4 @@
-module gitlab.cshield.io/cshield.tech/infra/terraform-provider-dyn
+module github.com/Cdiscount/terraform-provider-dyn
 
 go 1.14
 

@@ -1,8 +1,8 @@
 package main
 
 import (
+	"github.com/Cdiscount/terraform-provider-dyn/dyn"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/plugin"
-	"gitlab.cshield.io/cshield.tech/infra/terraform-provider-dyn/dyn"
 )
 
 // Generate docs for website
