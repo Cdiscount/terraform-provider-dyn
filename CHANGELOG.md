@@ -1,3 +1,12 @@
+## 1.3.1 (June 18, 2021)
+
+IMPROVEMENTS:
+
+* Activate DSF Monitors by default
+* Do not update Eligible on dsf record/record set when automation is not manual
+* Parallelize dynect requests
+* Use github address for module path
+
 ## 1.3.0 (June 14, 2021)
 
 IMPROVEMENTS:
