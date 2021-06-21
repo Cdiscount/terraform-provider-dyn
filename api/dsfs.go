@@ -173,7 +173,7 @@ type DSFRecordSetRequest struct {
 	FailCount      SInt   `json:"fail_count,omitempty"`
 	TroubleCount   SInt   `json:"trouble_count,omitempty"`
 	Eligible       *SBool `json:"eligible,omitempty"`
-	MonitorID      string `json:"dsf_monitor_id,omitempty"`
+	MonitorID      string `json:"dsf_monitor_id"`
 	DSFRsfc        string `json:"dsf_record_set_failover_chain_id"`
 	ResponsePoolId string `json:"dsf_response_pool_id"`
 }

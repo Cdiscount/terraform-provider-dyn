@@ -1,3 +1,9 @@
+## 1.3.2 (June 21, 2021)
+
+IMPROVEMENTS:
+
+* Ability to remove a DSF Monitor from a DSF Record Set
+
 ## 1.3.1 (June 18, 2021)
 
 IMPROVEMENTS:
