@@ -212,7 +212,6 @@ func computeDSFRecordSetRequest(d *schema.ResourceData, isCreate bool) *api.DSFR
 		TroubleCount: api.SInt(d.Get("trouble_count").(int)),
 		Eligible:     nil,
 		MonitorID:    d.Get("monitor_id").(string),
-		DSFRsfc:      d.Get("dsf_rsfc_id").(string),
 	}
 	if request.Automation == "manual" {
 		eligible := api.SBool(d.Get("eligible").(bool))
@@ -220,6 +219,7 @@ func computeDSFRecordSetRequest(d *schema.ResourceData, isCreate bool) *api.DSFR
 	}
 	if isCreate {
 		request.ResponsePoolId = d.Get("response_pool_id").(string)
+		request.DSFRsfc = d.Get("dsf_rsfc_id").(string)
 	}
 	return request
 }
