@@ -165,17 +165,17 @@ type DSFRsfcResponse struct {
 }
 type DSFRecordSetRequest struct {
 	PublishBlock
-	Label          string `json:"label"`
-	RDataClass     string `json:"rdata_class"`
-	TTL            SInt   `json:"ttl,omitempty"`
-	Automation     string `json:"automation,omitempty"`
-	ServeCount     SInt   `json:"serve_count,omitempty"`
-	FailCount      SInt   `json:"fail_count,omitempty"`
-	TroubleCount   SInt   `json:"trouble_count,omitempty"`
-	Eligible       *SBool `json:"eligible,omitempty"`
-	MonitorID      string `json:"dsf_monitor_id"`
-	DSFRsfc        string `json:"dsf_record_set_failover_chain_id,omitempty"`
-	ResponsePoolId string `json:"dsf_response_pool_id,omitempty"`
+	Label          string  `json:"label"`
+	RDataClass     string  `json:"rdata_class,omitempty"`
+	TTL            SInt    `json:"ttl,omitempty"`
+	Automation     string  `json:"automation,omitempty"`
+	ServeCount     SInt    `json:"serve_count,omitempty"`
+	FailCount      SInt    `json:"fail_count,omitempty"`
+	TroubleCount   SInt    `json:"trouble_count,omitempty"`
+	Eligible       *SBool  `json:"eligible,omitempty"`
+	MonitorID      *string `json:"dsf_monitor_id"`
+	DSFRsfc        string  `json:"dsf_record_set_failover_chain_id,omitempty"`
+	ResponsePoolId string  `json:"dsf_response_pool_id,omitempty"`
 }
 
 type DSFRecordSetResponse struct {

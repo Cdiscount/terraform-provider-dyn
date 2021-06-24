@@ -204,20 +204,24 @@ func computeDSFRecordSetRequest(d *schema.ResourceData, isCreate bool) *api.DSFR
 			Publish: true,
 		},
 		Label:        d.Get("label").(string),
-		RDataClass:   d.Get("rdata_class").(string),
 		TTL:          api.SInt(d.Get("ttl").(int)),
 		Automation:   d.Get("automation").(string),
 		ServeCount:   api.SInt(d.Get("serve_count").(int)),
 		FailCount:    api.SInt(d.Get("fail_count").(int)),
 		TroubleCount: api.SInt(d.Get("trouble_count").(int)),
 		Eligible:     nil,
-		MonitorID:    d.Get("monitor_id").(string),
+	}
+
+	monitor := d.Get("monitor_id").(string)
+	if monitor != "" {
+		request.MonitorID = &monitor
 	}
 	if request.Automation == "manual" {
 		eligible := api.SBool(d.Get("eligible").(bool))
 		request.Eligible = &eligible
 	}
 	if isCreate {
+		request.RDataClass = d.Get("rdata_class").(string)
 		request.ResponsePoolId = d.Get("response_pool_id").(string)
 		request.DSFRsfc = d.Get("dsf_rsfc_id").(string)
 	}

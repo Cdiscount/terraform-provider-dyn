@@ -1,3 +1,9 @@
+## 1.3.3 (June 21, 2021)
+
+IMPROVEMENTS:
+
+* Fix update bug for DSFRecordSet
+
 ## 1.3.2 (June 21, 2021)
 
 IMPROVEMENTS:
