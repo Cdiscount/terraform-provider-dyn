@@ -91,11 +91,5 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 		config:  &config,
 		clients: make([]*api.ConvenientClient, 0, 10),
 	}
-	// Create at least one client to validate credentials
-	c, err := provider.GetClient()
-	if err != nil {
-		return nil, err
-	}
-	provider.PutClient(c)
 	return &provider, nil
 }
