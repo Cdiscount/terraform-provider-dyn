@@ -1,3 +1,9 @@
+## 1.3.4 (August 5, 2021)
+
+IMPROVEMENTS:
+
+* Fix #1 do not validate credentials at startup
+
 ## 1.3.3 (June 21, 2021)
 
 IMPROVEMENTS:
