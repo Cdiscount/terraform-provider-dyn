@@ -9,7 +9,7 @@ Requirements
 ------------
 
 -	[Terraform](https://www.terraform.io/downloads.html) (works with 0.15.x)
--	[Go](https://golang.org/doc/install) (works with 1.14) (to build the provider plugin)
+-	[Go](https://golang.org/doc/install) (works with 1.16) (to build the provider plugin)
 -   make
 
 
