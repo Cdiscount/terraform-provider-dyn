@@ -1,3 +1,9 @@
+## 1.3.5 (April 28, 2022)
+
+IMPROVEMENTS:
+
+* Fix #3 Support darwin on arm64
+
 ## 1.3.4 (August 5, 2021)
 
 IMPROVEMENTS:
